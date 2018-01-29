@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring"/>
+	<package name="pages" extends="struts-default" namespace="/pages">
+		<action 	name="checkCode" 
+					class="cn.edn.yan.util.ImageAction">
+		</action>
+		
+		<action  name="adminLogin" 
+				 class="adminAction"
+				 method="adminLogin">
+			<result name="success" type="redirect">/pages/mamis/main.jsp</result>
+			<result name="input">/pages/login.jsp</result>
+		</action>
+	</package>
+	<!--配置管理员管理模块	-->
+	<package name="mamis" extends="struts-default" namespace="/pages/mamis">
+		<!--管理员信息维护  -->
+		<action name="listAdmin"
+				class="adminAction"
+				method="listAdmin">
+			<result name="success" >/pages/mamis/adminBrowse.jsp</result>
+		</action>
+		<action name="addAdmin"
+				class="adminAction"
+				method="addAdmin">
+			<result name="success" >/pages/mamis/adminAdd.jsp</result>
+			<result name="input">/pages/mamis/adminAdd.jsp</result>
+		</action>
+		<action name="findAdmin"
+				class="adminAction"
+				method="findAdmin">
+			<result name="success" >/pages/mamis/adminModify.jsp</result>
+		</action>
+		<action name="updateAdmin"
+				class="adminAction"
+				method="updateAdmin">
+			<result name="success" type="redirect">/pages/mamis/findAdmin.action</result>
+		</action>
+		<action name="updateRight"
+				class="adminAction"
+				method="updateRight">
+			<result name="success" type="redirect">/pages/mamis/listAdmin.action</result>
+		</action>
+		<action name="deleteAdmin"
+				class="adminAction"
+				method="deleteAdmin">
+			<result name="success" type="redirect">/pages/mamis/listAdmin.action</result>
+			<result name="input" type="redirect">/pages/mamis/listAdmin.action</result>
+		</action>
+		<action name="selectAdmin"
+				class="adminAction"
+				method="selectAdmin">
+			<result name="success">/pages/mamis/adminBrowse.jsp</result>
+		</action>
+		<!-- 模块信息维护 -->
+		<action name="listModule"
+				class="moduleAction"
+				method="listModule">
+			<result name="success" >/pages/mamis/moduleBrowse.jsp</result>
+		</action>
+		<action  name="findModule"
+				 class="moduleAction"
+				 method="findModule">
+			<result name="success" >/pages/mamis/moduleModify.jsp</result>
+		</action>
+		<action  name="addModule"
+				 class="moduleAction"
+				 method="addModule">
+			<result name="success" >/pages/mamis/moduleAdd.jsp</result>	 
+			<result name="input" >/pages/mamis/moduleAdd.jsp</result>	 
+		</action>
+		<action  name="deleteModule"
+				 class="moduleAction"
+				 method="deleteModule">
+			<result name="success" type="redirect">/pages/mamis/listModule.action</result>	 
+		</action>
+		<action name="updateModule"
+				class="moduleAction"
+				method="updateModule">
+			<result name="success" type="redirect">/pages/mamis/listModule.action</result>	
+		</action>
+		
+		<!-- 栏目信息维护 -->
+		<action name="listSection"
+				class="sectionAction"
+				method="listSection">
+			<result name="success" >/pages/mamis/sectionBrowse.jsp</result>
+		</action>
+		<action name="findSection"
+				class="sectionAction"
+				method="findSection">
+			<result name="success" >/pages/mamis/sectionModify.jsp</result>
+		</action>
+		<action name="addSection"
+				class="sectionAction"
+				method="addSection">
+			<result name="success" >/pages/mamis/sectionAdd.jsp</result>
+		</action>
+		<action name="updateSection"
+				class="sectionAction"
+				method="updateSection">
+			<result name="success" type="redirect">/pages/mamis/listSection.action</result>	
+		</action>
+		<action name="deleteSection"
+				class="sectionAction"
+				method="deleteSection">
+			<result name="success" type="redirect">/pages/mamis/listSection.action</result>
+		</action>
+		<action name="selectSection"
+				class="sectionAction"
+				method="selectSection">
+			<result name="success" >/pages/mamis/sectionBrowse.jsp</result>
+		</action>
+		<!-- 信息维护 -->
+		<action name="listInformation"
+				class="informationAction"
+				method="listInformation">
+			<result name="success" >/pages/mamis/informationBrowse.jsp</result>
+		</action>
+		<action name="addInformation"
+				class="informationAction"
+				method="addInformation">
+			<result name="success" >/pages/mamis/informationAdd.jsp</result>
+			<result name="input" type="redirect">/pages/mamis/newInforFileUpload.action</result>
+		</action>
+		<action name="findInformation"
+				class="informationAction"
+				method="findInformation">
+			<result name="success">/pages/mamis/informationModify.jsp</result>
+		</action>
+		<action name="updateInformation"
+				class="informationAction"
+				method="updateInformation">
+			<result name="success" type="redirect">/pages/mamis/findInformation.action</result>
+		</action>
+		<action name="deleteInformation"
+				class="informationAction"
+				method="deleteInformation">
+			<result name="success" type="redirect">/pages/mamis/listInformation.action</result>
+		</action>
+		<action name="selectInfor"
+				class="informationAction"
+				method="selectInfor">
+			<result name="success">/pages/mamis/informationBrowse.jsp</result>
+		</action>
+		
+		
+		<!--公告管理  -->
+		<action name="listAffiche"
+				class="afficheAction"
+				method="listAffiche">
+			<result name="success" >/pages/mamis/afficheBrowse.jsp</result>
+		</action>
+		<action name="addAffiche"
+				class="afficheAction"
+				method="addAffiche">
+			<result name="success" >/pages/mamis/afficheAdd.jsp</result>
+		</action>
+		<action name="findAffiche"
+				class="afficheAction"
+				method="findAffiche">
+			<result name="success" >/pages/mamis/afficheModify.jsp</result>
+		</action>
+		<action name="updateAffiche"
+				class="afficheAction"
+				method="updateAffiche">
+			<result name="success" type="redirect">/pages/mamis/listAffiche.action</result>
+		</action>
+		<action name="deleteAffiche"
+				class="afficheAction"
+				method="deleteAffiche">
+			<result name="success"  type="redirect">/pages/mamis/listAffiche.action</result>
+		</action>
+		<action name="selectAffiche"
+				class="afficheAction"
+				method="selectAffiche">
+			<result name="success" >/pages/mamis/afficheBrowse.jsp</result>
+		</action>
+		<!-- 友情链接管理 -->
+		<action name="listFriendshipConn"
+				class="friendshipConnAction"
+				method="listFriendshipConn">
+			<result name="success" >/pages/mamis/fshipconBrowse.jsp</result>
+		</action>
+		<action name="addFriendshipConn"
+				class="friendshipConnAction"
+				method="addFriendshipConn">
+			<result name="success" >/pages/mamis/fshipconAdd.jsp</result>
+		</action>
+		<action name="findFriendshipConn"
+				class="friendshipConnAction"
+				method="findFriendshipConn">
+			<result name="success" >/pages/mamis/fshipconModify.jsp</result>
+		</action>
+		<action name="updateFriendshipConn"
+				class="friendshipConnAction"
+				method="updateFriendshipConn">
+			<result name="success" type="redirect">/pages/mamis/listFriendshipConn.action</result>
+		</action>
+		<action name="deleteFriendshipConn"
+				class="friendshipConnAction"
+				method="deleteFriendshipConn">
+			<result name="success"  type="redirect">/pages/mamis/listFriendshipConn.action</result>
+		</action>
+		<!-- 文件上传 -->
+		
+		<action name="addFile" 
+				class="fileUploadAction"
+				method="addFile">
+			<interceptor-ref name="fileUpload">
+				<!-- 配置允许上传的文件大小，单位字节 -->
+				<param name="maximumSize">10240000</param>
+			</interceptor-ref>	
+			<interceptor-ref name="fileUploadStack"/>
+			<result name="input">/pages/mamis/FileUpload.jsp</result>
+			<result name="success">/pages/mamis/FileUpload.jsp</result>
+		</action>
+		<action name="newInforFileUpload" 
+				class="fileUploadAction"
+				method="newInforId">
+			<result name="success">/pages/mamis/FileUpload.jsp</result>
+		</action>
+		<action name="listFile" 
+				class="fileUploadAction"
+				method="listFile">
+			<result name="input">/pages/mamis/FileUpload.jsp</result>
+			<result name="success">/pages/mamis/FileUpload.jsp</result>
+		</action>
+		<action name="deleteFile" 
+				class="fileUploadAction"
+				method="deleteFile">
+			<result name="input">/pages/mamis/FileUpload.jsp</result>
+			<result name="success" type="redirect">/pages/mamis/listFile.action</result>
+		</action>
+
+	</package>
+</struts>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	* FCKeditor - The text editor for Internet - http://www.fckeditor.net
+	* Copyright (C) 2004-2010 Frederico Caldeira Knabben
+	* 
+	* == BEGIN LICENSE ==
+	* 
+	* Licensed under the terms of any of the following licenses at your
+	* choice:
+	* 
+	*  - GNU General Public License Version 2 or later (the "GPL")
+	*    http://www.gnu.org/licenses/gpl.html
+	* 
+	*  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+	*    http://www.gnu.org/licenses/lgpl.html
+	* 
+	*  - Mozilla Public License Version 1.1 or later (the "MPL")
+	*    http://www.mozilla.org/MPL/MPL-1.1.html
+	* 
+	* == END LICENSE ==
+	* @version: $Id: web.xml 4785 2009-12-21 20:10:28Z mosipov $
+-->
+<web-app version="2.5" id="fckeditor-java"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<servlet>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<servlet-class>
+			net.fckeditor.connector.ConnectorServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<!-- Do not wrap this line otherwise Glassfish will fail to load this file -->
+		<url-pattern>
+			/fckeditor/editor/filemanager/connectors/*
+		</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+		<filter-name>struts-cleanup</filter-name>
+		<filter-class>
+			org.apache.struts2.dispatcher.ActionContextCleanUp
+		</filter-class>
+	</filter>
+	
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>
+			org.apache.struts2.dispatcher.FilterDispatcher
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>struts-cleanup</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts-cleanup</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 加载spring -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<!--错误处理	-->
+	<!--<error-page>
+		<error-code>404</error-code>
+		<location>/pages/error404.jsp</location>
+		</error-page>
+		<error-page>
+		<error-code>500</error-code>
+		<location>/pages/error500.jsp</location>
+		</error-page>-->
+
+</web-app>

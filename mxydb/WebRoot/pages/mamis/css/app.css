@@ -1,0 +1,40 @@
+BODY {
+	margin-left: 10px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-size:9pt;
+	background-image: url("../image/beijing.gif"); 
+	font:"ËÎÌו";
+	
+	SCROLLBAR-FACE-COLOR: #75b2e1;
+	SCROLLBAR-HIGHLIGHT-COLOR: #cccccc;
+	SCROLLBAR-SHADOW-COLOR: #fcfcfc;
+	SCROLLBAR-3DLIGHT-COLOR: #fcfcfc;
+	SCROLLBAR-ARROW-COLOR: #273e4e;
+	SCROLLBAR-TRACK-COLOR: #dcf1ff;
+	SCROLLBAR-DARKSHADOW-COLOR: #cccccc;
+	SCROLLBAR-BASE-COLOR: #fcfcfc;
+	Windsor:expression(document.body.onselectstart=document.body.oncontextmenu=function(){return false;});
+}
+a:link {
+	color: #000000;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #000000;
+}
+a:hover {
+	text-decoration: none;
+	color: #4699DF;
+}
+a:active {
+	text-decoration: none;
+}
+.f14 {FONT-SIZE: 14px
+}
+.ip {FONT-SIZE: 14px; WIDTH: 120px; HEIGHT: 22px
+}
+.ip {FONT-SIZE: 14px; WIDTH: 120px; HEIGHT: 22px
+}

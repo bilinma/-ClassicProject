@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="myDefault" abstract="true" extends="struts-default">
+	</package>
+	
+	<package name="jsp" namespace="/jsp" extends="myDefault">
+		<action name="*.jsp">
+			<result>/WEB-INF/pages/{1}.action</result>
+		</action>
+		<!-- 主页 -->
+		<action  name="main" 
+				 class="moduleAction"
+				 method="listModules">
+			<result name="success" >/WEB-INF/jsp/main.jsp</result>
+		</action>
+		<action name="showNews"
+				class="informationAction"
+				method="findInfo">
+			<result>/WEB-INF/jsp/news/showNews.jsp</result>		
+		</action>
+		<action name="showPolicy"
+				class="informationAction"
+				method="findInfo">
+			<result>/WEB-INF/jsp/policy/showPolicy.jsp</result>		
+		</action>
+		<action name="relationUs"
+				class="informationAction"
+				method="sectionInfor">
+			<result name="success">/WEB-INF/jsp/aboutus/aboutusInfo.jsp</result>
+		</action>
+		<!-- 关于我们 -->
+		<action name="aboutusIndex"
+				class="informationAction"
+				method="listAboutusInfo">
+			<result name="success">/WEB-INF/jsp/aboutus/aboutusIndex.jsp</result>
+		</action>
+		<action name="aboutusInfo"
+				class="informationAction"
+				method="listInfor">
+			<result name="success">/WEB-INF/jsp/aboutus/aboutusInfo.jsp</result>
+		</action>
+		<action name="showAboutus"
+				class="informationAction"
+				method="findInfo">
+			<result>/WEB-INF/jsp/operation/showOperation.jsp</result>		
+		</action>
+		<!-- 新闻资讯 -->
+		<action name="newsIndex"
+				class="informationAction"
+				method="listNewsInfo">
+			<result name="success" >/WEB-INF/jsp/news/newsIndex.jsp</result>
+		</action>
+		<action name="newsList"
+				class="informationAction"
+				method="listInfor">
+			<result name="success">/WEB-INF/jsp/news/newsList.jsp </result>
+		</action>
+		<action name="newsSection"
+				class="informationAction"
+				method="sectionInfor">
+			<result name="success">/WEB-INF/jsp/news/newsList.jsp </result>
+		</action>
+		<action name="searchNews"
+				class="informationAction"
+				method="searchNews">
+			<result name="success">/WEB-INF/jsp/news/newsList.jsp </result>
+		</action>
+		<!-- 政策法规 -->
+		<action name="policyIndex"
+				class="informationAction"
+				method="listPolicyInfo">
+			<result name="success" >/WEB-INF/jsp/policy/policyIndex.jsp</result>
+		</action>
+		
+		<action name="lawList"
+				class="informationAction"
+				method="listInfor">
+			<result name="success">/WEB-INF/jsp/policy/lawList.jsp </result>
+		</action>
+		
+		<action name="lawSection"
+				class="informationAction"
+				method="sectionInfor">
+			<result name="success">/WEB-INF/jsp/policy/lawList.jsp </result>
+		</action>
+		<!-- 业务内容 -->
+		<action name="operationIndex"
+				class="informationAction"
+				method="listOperationInfo">
+			<result name="success" >/WEB-INF/jsp/operation/operationIndex.jsp</result>
+		</action>
+		<action name="operationList"
+				class="informationAction"
+				method="listInfor">
+			<result name="success">/WEB-INF/jsp/operation/operationList.jsp </result>
+		</action>
+		<action name="showOperation"
+				class="informationAction"
+				method="findInfo">
+			<result>/WEB-INF/jsp/operation/showOperation.jsp</result>		
+		</action>
+		<!-- 公告 -->
+		<action name="afficheAll"
+				class="afficheAction"
+				method="listAffiches">
+			<result name="success">/WEB-INF/jsp/afficheall/afficheAll.jsp</result>
+		</action>
+		<action name="showAff"
+				class="afficheAction"
+				method="findById">
+			<result name="success">/WEB-INF/jsp/afficheall/showAff.jsp</result>
+		</action>
+		<action name="selectAffiche"
+				class="afficheAction"
+				method="selectAffiche">
+			<result name="success">/WEB-INF/jsp/afficheall/afficheAll.jsp</result>
+		</action>
+		<!-- 文件下载 -->
+		<action name="download"
+				class="fileDownloadAction">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<param name="inputName">downloadFile</param>
+			</result>
+		</action>
+	</package>
+</struts>

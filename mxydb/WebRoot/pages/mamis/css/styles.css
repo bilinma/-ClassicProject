@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+body {
+	margin: 0px;
+}
+
+#d1 {
+	width: 400px;
+	height: 300px;
+	background-color: 00ffff;
+	top: 40px;
+	left: 40px;
+	position: relative;
+}
+
+#d1_head {
+	height: 20px;
+	color: #ffffff;
+	background-color: blue;
+	font-size: 15pt;
+}
+
+#d1_body {
+	top: 40px;
+	left: 40px;
+	position: relative;
+}
+
+.err {
+	background-color: red;
+}
+
+.msg {
+	color: red;
+}

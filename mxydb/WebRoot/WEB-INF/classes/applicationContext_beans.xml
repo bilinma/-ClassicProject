@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+									http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+									http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+									default-autowire="byType">
+
+	<!-- 配置 DAO-->
+	<bean id="moduleDAO" class="cn.edn.yan.dao.impl.ModuleDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="friendshipConnDAO" class="cn.edn.yan.dao.impl.FriendshipConnDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="informationDAO" class="cn.edn.yan.dao.impl.InformationDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="sectionDAO" class="cn.edn.yan.dao.impl.SectionDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="afficheDAO" class="cn.edn.yan.dao.impl.AfficheDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="adminDAO" class="cn.edn.yan.dao.impl.AdminDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="rightDAO" class="cn.edn.yan.dao.impl.RightDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="adminrightDAO" class="cn.edn.yan.dao.impl.AdminrightDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="fileDAO" class="cn.edn.yan.dao.impl.FileDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 配置 Service-->
+	<bean id="moduleService" class="cn.edn.yan.service.impl.ModuleServiceImpl">
+		<property name="moduleDao" ref="moduleDAO"></property>
+	</bean>
+	<bean id="friendshipConnService" class="cn.edn.yan.service.impl.FriendshipConnServiceImpl">
+		<property name="friendshipConnDao" ref="friendshipConnDAO"></property>
+	</bean>
+	<bean id="informationService" class="cn.edn.yan.service.impl.InformationServiceImpl">
+		<property name="informationDao" ref="informationDAO"></property>
+	</bean>
+	<bean id="sectionService" class="cn.edn.yan.service.impl.SectionServiceImpl">
+		<property name="sectionDao" ref="sectionDAO"></property>
+	</bean>
+	<bean id="afficheService" class="cn.edn.yan.service.impl.AfficheServiceImpl">
+		<property name="afficheDao" ref="afficheDAO"></property>
+	</bean>
+	<bean id="adminService" class="cn.edn.yan.service.impl.AdminServiceImpl">
+		<property name="adminDao" ref="adminDAO"></property>
+	</bean>
+	
+	<bean id="rightService" class="cn.edn.yan.service.impl.RightServiceImpl">
+		<property name="rightDao" ref="rightDAO"></property>
+	</bean>
+	<bean id="adminrightService" class="cn.edn.yan.service.impl.AdminrightServiceImpl">
+		<property name="adminrightDao" ref="adminrightDAO"></property>
+	</bean>
+	
+	<bean id="fileService" class="cn.edn.yan.service.impl.FileServiceImpl">
+		<property name="fileDao" ref="fileDAO"></property>
+	</bean>
+	
+	<!-- 配置 Action-->
+	<bean id="adminAction" class="cn.edn.yan.action.AdminAction">
+		<property name="adminService" ref="adminService"></property>
+	</bean>
+	<bean id="moduleAction" class="cn.edn.yan.action.ModuleAction">
+		<property name="moduleService" ref="moduleService"></property>
+	</bean>
+	<bean id="sectionAction" class="cn.edn.yan.action.SectionAction">
+		<property name="sectionService" ref="sectionService"></property>
+	</bean>
+	<bean id="informationAction" class="cn.edn.yan.action.InformationAction">
+		<property name="informationService" ref="informationService"></property>
+		<property name="sectionService" ref="sectionService"></property>
+		<property name="moduleService" ref="moduleService"></property>
+	</bean>
+	<bean id="afficheAction" class="cn.edn.yan.action.AfficheAction">
+		<property name="afficheService" ref="afficheService"></property>
+	</bean>
+	<bean id="friendshipConnAction" class="cn.edn.yan.action.FriendshipConnAction">
+		<property name="friendshipConnService" ref="friendshipConnService"></property>
+	</bean>
+	<bean id="fileUploadAction" class="cn.edn.yan.action.FileUploadAction">
+		<property name="fileService" ref="fileService"></property>
+	</bean>
+	<bean id="fileDownloadAction" class="cn.edn.yan.action.FileDownloadAction">
+	</bean>
+</beans>

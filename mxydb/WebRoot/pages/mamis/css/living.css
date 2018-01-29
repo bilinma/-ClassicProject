@@ -1,0 +1,93 @@
+BODY {
+	MARGIN: 0px; BACKGROUND-COLOR: #F3F3F5
+}
+BODY {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; FONT-STYLE: normal; FONT-FAMILY: "宋体"
+}
+
+BODY {
+	MARGIN: 0px; SCROLLBAR-SHADOW-COLOR: #999999; SCROLLBAR-ARROW-COLOR: #555555; FONT-FAMILY: 宋体; SCROLLBAR-DARKSHADOW-COLOR: #ffffff; SCROLLBAR-BASE-COLOR: #e0e0e0;
+	overflow:auto;
+}
+INPUT {
+	background-color:#fff;BORDER-RIGHT: #111111 1px solid; BORDER-TOP: #111111 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #111111 1px solid; BORDER-BOTTOM: #111111 1px solid; FONT-FAMILY: "MS Shell Dlg","Verdana","宋体"
+}
+SELECT {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-SIZE: 12px; LEFT: -2px; BORDER-LEFT: 0px;  LINE-HEIGHT: 14px; BORDER-BOTTOM: 0px; POSITION: relative; TOP: -2px
+}
+OPTION {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "MS Shell Dlg","Verdana","宋体"
+}
+TEXTAREA {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid; FONT-FAMILY: "MS Shell Dlg","Verdana","宋体"
+}
+.content A:link {
+	FONT-SIZE: 9pt; COLOR: #000000; LINE-HEIGHT: 160%; TEXT-DECORATION: none
+}
+.content A:visited {
+	FONT-SIZE: 9pt; COLOR: #000000; LINE-HEIGHT: 160%; TEXT-DECORATION: none
+}
+.content A:hover {
+	FONT-SIZE: 9pt; COLOR: #07519A; LINE-HEIGHT: 160%
+}
+.page A:link {
+	FONT-SIZE: 9pt; COLOR: #000000; TEXT-DECORATION: none
+}
+.page A:visited {
+	FONT-SIZE: 9pt; COLOR: #000000; TEXT-DECORATION: none
+}
+.page A:hover {
+	FONT-SIZE: 9pt; COLOR: #07519A; TEXT-DECORATION: underline
+}
+.border {
+	BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid
+}
+.td1{
+    background:#EBF3FB;	
+}
+a
+{
+	color: rgb(19,112,171);	font-size: 1em;
+	font-weight: normal;
+	text-decoration: none;
+	margin-left: 0px;
+	font-size:12px;
+	vertical-align: middle;
+}
+
+a:link, a:visited
+{
+	color: rgb(19,112,171);
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+a:hover
+{
+	color: rgb(7,74,229);
+	text-decoration: underline;
+}
+
+TABLE,td,th{
+    border-color:#AACCEE ;
+    border-style:solid;
+    border-width:1px;
+    font-size:12px;
+}
+th{
+	background-image:url(../image/th_bk.bmp);
+	}
+input.button{
+	background-image:url(../image/bt_bg.bmp);
+}
+.line2{
+     border:none;	
+}
+.tmp{
+	
+      border:#AACCEE 1px solid;	
+}
+FRAME{
+	
+    background-color:#F3F3F5;	
+}
