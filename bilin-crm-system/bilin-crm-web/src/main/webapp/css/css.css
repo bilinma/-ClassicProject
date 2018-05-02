@@ -1,0 +1,166 @@
+
+BODY {
+	font-size:9pt;
+	font:"ËÎÌו";
+	overflow-x : hidden; 
+	background-image: url("../image/left_bj.gif");
+	SCROLLBAR-FACE-COLOR: #43B6FF;
+	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff;
+	SCROLLBAR-SHADOW-COLOR: #cccccc;
+	SCROLLBAR-3DLIGHT-COLOR: #33a6dc;
+	SCROLLBAR-ARROW-COLOR: #000000;
+	SCROLLBAR-TRACK-COLOR: #ffffff;
+	SCROLLBAR-DARKSHADOW-COLOR: #ffffff;
+	SCROLLBAR-BASE-COLOR: #33a6dc;
+}
+H1,H2,H3,H4,H5,H6 {
+	color: #38497F;
+}
+
+H1 {
+	font-size: 24px;
+	text-align: center;
+}
+
+table {
+	border-collapse: collapse;
+	border-color:#4badf8;
+	border-top-color:#4badf8;
+	border-width: 1px;
+}
+
+TH {
+	font-size: 14px;
+	border-color:#4badf8;
+	font-weight: normal;	
+	height: 30;
+	padding-left: 4px;
+	padding-right: 4px;
+	text-align:center;
+	background-image:url(../image/th.gif);
+	color:#FFFFFF;
+}
+.td1{
+	font-size:12pt;
+	border-color:#029fe8;
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 26px; 
+	FONT-STYLE: normal; 
+	FONT-FAMILY: "??";
+	background-color:#e4f2ff;
+}
+.td2{
+	font-size:12pt;
+	border-color:#029fe8;
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 26px; 
+	FONT-STYLE: normal; 
+	FONT-FAMILY: "??";
+	background-color:#ededed;
+}
+
+td{
+	font-size:12pt;
+	border-color:#029fe8;
+	FONT-SIZE: 14px;
+	LINE-HEIGHT: 23px; 
+	FONT-STYLE: normal; 
+	FONT-FAMILY: "??"
+}
+
+TD.CalendarTable {
+	font-size: 12px;
+	border-width: 1px;
+}
+
+
+.shdow{filter:DropShadow(Color=#E6E3E3,OffX=1,OffY=1,positive=1);}
+
+
+
+a:link {  font-size: 13px; color:#0451ae; text-decoration: none}
+a:visited {  font-size: 13px; color:#0451ae; text-decoration: none}
+a:hover {  font-size: 13px; color:#FF6702; text-decoration:none}
+
+a.graya:link {  font-size: 12px; color:#999999; text-decoration: none; padding-bottom:0px;}
+a.graya:visited {  font-size: 12px; color:#999999; text-decoration: none}
+a.graya:hover {  font-size: 12px; color:#999999; text-decoration:underline}
+
+a.dh:link {  font-size: 13px; color:#003399; text-decoration: none}
+a.dh:visited {  font-size: 13px; color:#003399; text-decoration: none}
+a.dh:hover {  font-size: 13px; color:#003399; text-decoration:none}
+
+.title{
+	font-size:15px;
+	color:#990000;
+	font-weight:600;
+	letter-spacing:2px;
+}
+
+INPUT{
+	
+
+		color: #000000;
+		FONT-SIZE: 9pt;
+		HEIGHT: 20px;
+	
+
+}
+
+SELECT {
+	border-width: 1px;
+}
+
+.iform {
+	border-width: 1px;
+}
+
+input.readOnly {
+	background: #E7E7E8;
+	border-width: 0px;
+}
+textarea.readOnly {
+	background: #E7E7E8;
+	border-width: 2px;
+}
+input.number {
+	text-align: right;
+}
+input.numberReadOnly {
+	background: #E7E7E8;
+	border-width: 0px;
+	text-align: right;
+}
+.text{
+	color:"#0B2B5B"; 
+	font-size:14px;
+	FILTER:Dropshadow(color=#D3DDE0, Offx=1, OffY=1, Positive=0.5); 
+	HEIGHT: 7px; 
+	WIDTH: 300px
+}
+.line1 {
+	FONT-SIZE: 14px; LINE-HEIGHT: 20px; FONT-STYLE: normal; FONT-FAMILY: "??"
+}
+.line2 {
+	FONT-SIZE: 14px; LINE-HEIGHT: 20px; FONT-STYLE: normal; font-weight: bold; FONT-FAMILY: "??"
+}
+
+.btn{ 
+BORDER-RIGHT: #002D96 1px solid; 
+PADDING-RIGHT: 3px; 
+BORDER-TOP: #002D96 1px solid; 
+PADDING-LEFT: 3px; 
+FONT-SIZE: 12px; 
+FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#FFFFFF, EndColorStr=#9DBCEA); 
+BORDER-LEFT: #002D96 1px solid;
+CURSOR: hand; 
+COLOR: black; 
+PADDING-TOP: 2px; 
+BORDER-BOTTOM: #002D96 1px solid 
+}
+
+.txt{
+		border:'1px solid #4badf8';
+		width:90%;
+		ime-mode:disabled;
+}
