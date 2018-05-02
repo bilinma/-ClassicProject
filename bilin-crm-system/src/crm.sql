@@ -1,6 +1,6 @@
 /*
 SQLyog  v12.2.6 (64 bit)
-MySQL - 5.7.9-log : Database - crm
+MySQL - 5.7.19-log : Database - crm
 *********************************************************************
 */
 
@@ -33,13 +33,21 @@ CREATE TABLE `t_customer` (
   `create_Time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `remark` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
-/*Data for the table `t_customer` */
+/*Table structure for table `t_dictionary` */
 
-insert  into `t_customer`(`id`,`code`,`name`,`pinyin_Name`,`telephone`,`wechat`,`level`,`amount_Total`,`is_Back`,`create_Time`,`remark`) values 
-(5,NULL,'马小斌',NULL,'13309257387','',1,0,NULL,'2018-05-01 11:01:28',''),
-(6,NULL,'姜乐',NULL,'13321234123','',1,0,NULL,'2018-05-01 11:02:58','');
+DROP TABLE IF EXISTS `t_dictionary`;
+
+CREATE TABLE `t_dictionary` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水号',
+  `group_type` char(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '类别',
+  `code` char(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '编码',
+  `name` char(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '名称',
+  `remark` char(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx-groupType-code` (`group_type`,`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=3381 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Table structure for table `t_menu` */
 
@@ -56,8 +64,6 @@ CREATE TABLE `t_menu` (
   PRIMARY KEY (`menuId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `t_menu` */
-
 /*Table structure for table `t_order` */
 
 DROP TABLE IF EXISTS `t_order`;
@@ -69,13 +75,12 @@ CREATE TABLE `t_order` (
   `customerId` bigint(11) DEFAULT NULL COMMENT '顾客ID',
   `deskNo` varchar(3) DEFAULT NULL COMMENT '桌号',
   `amount` int(10) DEFAULT NULL COMMENT '消费金额',
-  `orderStatus` int(2) DEFAULT NULL COMMENT '订单状态',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `order_status` int(2) DEFAULT NULL COMMENT '订单状态',
+  `back_status` int(2) DEFAULT NULL COMMENT '返款状态',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '订单备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `t_order` */
 
 /*Table structure for table `t_user` */
 
@@ -91,11 +96,6 @@ CREATE TABLE `t_user` (
   `create_Time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-/*Data for the table `t_user` */
-
-insert  into `t_user`(`id`,`user_Code`,`user_Name`,`password`,`telephone`,`wechat`,`create_Time`) values 
-(1,'admin','bilin','E10ADC3949BA59ABBE56E057F20F883E','1312',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
