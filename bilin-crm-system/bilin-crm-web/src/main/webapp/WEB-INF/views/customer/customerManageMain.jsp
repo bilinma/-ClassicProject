@@ -10,8 +10,20 @@
   			document.getElementById("operateBtn").style.display = "none";
   		}
   		
+<<<<<<< HEAD
   		//下拉选项
         var custLevelAdapter = getJqxSelectList('CUST_LEVEL');
+=======
+  		//是否下拉选项
+        var yesornolist = [{label:'是',value:1},{label:'否',value:0}];     
+        var yesornoSource = {                 
+       		datatype: "array",                 
+       		datafields: [ { name: 'label', type: 'string' },{ name: 'value', type: 'string' } ],                 
+       		localdata: yesornolist           
+        };           
+        var yesornoAdapter = new $.jqx.dataAdapter(yesornoSource, {autoBind: true});
+        
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
         var searchValue = $('#searchValue').val();
         var source = {
         	datatype: "json",
@@ -23,7 +35,11 @@
                 { name: 'telephone',type: 'string' }, 
                 { name: 'wechat',type: 'string' },
                 { name: 'level',type: 'string' },
+<<<<<<< HEAD
                 { name: 'levelShow',value:'level',values: {source: custLevelAdapter.records, value: 'value', name: 'label'}},
+=======
+                { name: 'levelShow',value:'level',values: {source: yesornoAdapter.records, value: 'value', name: 'label'}},
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
                 { name: 'amountTotal',type:'string'},
                 { name: 'createTime',type:'string'},
                 { name: 'operate', type: 'string' }
@@ -75,7 +91,11 @@
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
               {text: '客户编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer}, 
               {text: '客户名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
+<<<<<<< HEAD
               {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer},
+=======
+              {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
               {text: '微信',  datafield: 'wechat', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
               {text: '客户等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
@@ -132,11 +152,14 @@
       
         $("#addCustomerBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
         $("#addCustomerBtn").on("click",function(){
+<<<<<<< HEAD
         	$("#code").val('');
 	    	$("#name").val('');
 	    	$("#telephone").val('');
 	    	$("#wechat").val('');
 	    	$('#remark').val('');
+=======
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
         	$('#addCustomerWin').jqxWindow('open'); 
         });
 		$("#addCustomerWin").jqxWindow({ 
@@ -153,11 +176,14 @@
 		});
 		$("#confirmBtn").jqxButton({width: '100',height:'23'});
 		$('#confirmBtn').on('click',function(){
+<<<<<<< HEAD
 			var code = $("#code").val();
 			if (!code) {
 				alert("顾客编码不能为空！")
 				return ;
 			}
+=======
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 			var name = $("#name").val();
 			if (!name) {
 				alert("姓名不能为空！")
@@ -171,7 +197,10 @@
                 contentType: "application/json",   
                 url: "customer/saveCustomerData.do",
                 data: {
+<<<<<<< HEAD
                 	code:code,
+=======
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
                 	name:name,
                 	telephone:telephone,
                 	wechat:$("#wechat").val(),
@@ -195,11 +224,17 @@
 		
 		$("#cancelBtn").jqxButton({width: '100',height:'23'});
 	    $('#cancelBtn').on('click',function(){
+<<<<<<< HEAD
 	    	$("#code").val('');
 	    	$("#name").val('');
 	    	$("#telephone").val('');
 	    	$("#wechat").val('');
 	    	$('#remark').val('');
+=======
+	    	$("#name").val('');
+	    	$("#telephone").val('');
+	    	$('#tableName').val('');
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 	    	$('#addCustomerWin').jqxWindow('close');
 	    });
         
@@ -229,10 +264,17 @@
 		<div>
 			<div id="addCustomerTable">
 				<table class="register-table">
+<<<<<<< HEAD
 					<tr>
 						<td>顾客编码:</td>
 						<td><input type="text" id="code" class="text-input" /><font color=red>*</font></td>
 					</tr>
+=======
+					<!-- <tr>
+						<td>顾客编码:</td>
+						<td><input type="text" id="code" class="text-input" /><font color=red>*</font></td>
+					</tr> -->
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 					<tr>
 						<td>名称:</td>
 						<td><input type="text" id="name" class="text-input" /><font color=red>*</font></td>

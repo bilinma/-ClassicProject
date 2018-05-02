@@ -27,6 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript"> 
 $.jqx.theme = 'ui-redmond';
+<<<<<<< HEAD
 
 //下拉选项
 function getJqxSelectList(gropType){
@@ -44,5 +45,7 @@ function getJqxSelectList(gropType){
 	};           
 	return new $.jqx.dataAdapter(selectSource, {autoBind: true});
 }
+=======
+>>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 </script> 
 </head>
