@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilin.crm.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.bilin.crm.domain.Order">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="orderNo" jdbcType="VARCHAR" property="orderNo" />
+    <result column="orderSeq" jdbcType="INTEGER" property="orderSeq" />
+    <result column="customerId" jdbcType="BIGINT" property="customerId" />
+    <result column="deskNo" jdbcType="VARCHAR" property="deskNo" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="orderStatus" jdbcType="INTEGER" property="orderStatus" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_No, order_Seq, cust_Id, desk_No, amount, order_Status, create_Time, remark
+  </sql>
+  <select id="selectByCustomerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>
