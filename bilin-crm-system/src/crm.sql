@@ -1,10 +1,6 @@
 /*
 SQLyog  v12.2.6 (64 bit)
-<<<<<<< HEAD
 MySQL - 5.7.19-log : Database - crm
-=======
-MySQL - 5.7.9-log : Database - crm
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 *********************************************************************
 */
 
@@ -37,8 +33,12 @@ CREATE TABLE `t_customer` (
   `create_Time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `remark` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+/*Data for the table `t_customer` */
+
+insert  into `t_customer`(`id`,`code`,`name`,`pinyin_Name`,`telephone`,`wechat`,`level`,`amount_Total`,`is_Back`,`create_Time`,`remark`) values 
+(12,'A001','é©¬å°æ',NULL,'13309257387','111',1,0,NULL,'2018-05-02 20:04:18','é¿æ¯é¡¿åéå°åéå°é¿è¨å¾·é¿è¨å¾·');
 
 /*Table structure for table `t_dictionary` */
 
@@ -53,15 +53,17 @@ CREATE TABLE `t_dictionary` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx-groupType-code` (`group_type`,`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3381 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-/*Data for the table `t_customer` */
+/*Data for the table `t_dictionary` */
 
-insert  into `t_customer`(`id`,`code`,`name`,`pinyin_Name`,`telephone`,`wechat`,`level`,`amount_Total`,`is_Back`,`create_Time`,`remark`) values 
-(5,NULL,'马小斌',NULL,'13309257387','',1,0,NULL,'2018-05-01 11:01:28',''),
-(6,NULL,'姜乐',NULL,'13321234123','',1,0,NULL,'2018-05-01 11:02:58','');
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
+insert  into `t_dictionary`(`id`,`group_type`,`code`,`name`,`remark`) values 
+(3374,'YES_NO','1','是',NULL),
+(3375,'YES_NO','0','否',NULL),
+(3376,'CUST_LEVEL','1','普通',NULL),
+(3377,'CUST_LEVEL','2','白银',NULL),
+(3378,'CUST_LEVEL','3','黄金',NULL),
+(3379,'CUST_LEVEL','4','钻石',NULL),
+(3380,'CUST_LEVEL','0','黑名单',NULL);
 
 /*Table structure for table `t_menu` */
 
@@ -78,11 +80,8 @@ CREATE TABLE `t_menu` (
   PRIMARY KEY (`menuId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
-=======
 /*Data for the table `t_menu` */
 
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 /*Table structure for table `t_order` */
 
 DROP TABLE IF EXISTS `t_order`;
@@ -94,23 +93,15 @@ CREATE TABLE `t_order` (
   `customerId` bigint(11) DEFAULT NULL COMMENT '顾客ID',
   `deskNo` varchar(3) DEFAULT NULL COMMENT '桌号',
   `amount` int(10) DEFAULT NULL COMMENT '消费金额',
-<<<<<<< HEAD
   `order_status` int(2) DEFAULT NULL COMMENT '订单状态',
   `back_status` int(2) DEFAULT NULL COMMENT '返款状态',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-=======
-  `orderStatus` int(2) DEFAULT NULL COMMENT '订单状态',
-  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
   `remark` varchar(500) DEFAULT NULL COMMENT '订单备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
-=======
 /*Data for the table `t_order` */
 
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 /*Table structure for table `t_user` */
 
 DROP TABLE IF EXISTS `t_user`;
@@ -126,14 +117,11 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
-=======
 /*Data for the table `t_user` */
 
 insert  into `t_user`(`id`,`user_Code`,`user_Name`,`password`,`telephone`,`wechat`,`create_Time`) values 
 (1,'admin','bilin','E10ADC3949BA59ABBE56E057F20F883E','1312',NULL,NULL);
 
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
