@@ -39,7 +39,7 @@ public class UserInfoFilter implements Filter {
 
 			}
 		} else {
-			request.getSession().setAttribute("userDTO", userDTO);
+			request.getSession().setAttribute("loginUserInfo", userDTO);
 			UserUtils.setUser(userDTO);
 			filterChain.doFilter(req, res);
 		}

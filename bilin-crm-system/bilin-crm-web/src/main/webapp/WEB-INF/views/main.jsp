@@ -45,8 +45,8 @@
 	    <div id='jqxWidget' style='height:100px;'>             
 	    	<div id='jqxMenu' style='visibility: hidden;'>   
 	    		 <ul>
+		    		 <li id="orderManage"><a href="order/init.do" target="mainContent" id="orderData">订单列表</a></li>
 		    		 <li id="customerManage"><a href="customer/init.do" target="mainContent" >客户管理</a></li>
-		    		 <li><a href="order/init.do" target="mainContent" id="orderData">订单列表</a></li>
 		    		 <li id="out"><a onClick="logout(1)" href="javascript:void(0)">退出</a></li>    
 	    		 </ul>   
 	    	</div>

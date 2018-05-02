@@ -51,6 +51,11 @@ public class Order implements Serializable {
      * 订单状态
      */
     private Integer orderStatus;
+    
+    /**
+     * 订单状态
+     */
+    private Integer backStatus;
 
     /**
      * 创建时间
@@ -118,8 +123,16 @@ public class Order implements Serializable {
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
     }
+    
+	public Integer getBackStatus() {
+		return backStatus;
+	}
 
-    public Date getCreateTime() {
+	public void setBackStatus(Integer backStatus) {
+		this.backStatus = backStatus;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 
