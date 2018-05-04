@@ -3,13 +3,16 @@ package com.bilin.crm.service;
 import java.util.List;
 
 import com.bilin.crm.domain.Order;
+import com.bilin.crm.vo.OrderCondition;
 
 public interface IOrderService {
 
-	void deleteOrder(Long id);
+	public void deleteOrder(Long id);
 
-	int saveOrder(Order order);
+	public int saveOrder(Order order);
 
-	List<Order> getOrderList(String searchValue);
+	public List<Order> getOrderList(OrderCondition orderQuery);
+
+	public Integer getNextOrderSeq();
 
 }

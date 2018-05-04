@@ -95,4 +95,19 @@ public class CustomerController {
 		return "success";
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "/getCustomerSelect")
+	public List<Map<String,Object>> getCustomerSelect(){
+		List<Customer> dataList = customerService.getCustomerList(null);
+		List<Map<String,Object>> retlist = new ArrayList<Map<String,Object>>();
+		for(Customer customer : dataList){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("value", customer.getId());
+			map.put("label", customer.getName());
+			retlist.add(map);
+		}
+		return retlist;
+	}
+	
 }

@@ -1,24 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bilin.crm.dao.OrderMapper">
-  <resultMap id="BaseResultMap" type="com.bilin.crm.domain.Order">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="orderNo" jdbcType="VARCHAR" property="orderNo" />
-    <result column="orderSeq" jdbcType="INTEGER" property="orderSeq" />
-    <result column="customerId" jdbcType="BIGINT" property="customerId" />
-    <result column="deskNo" jdbcType="VARCHAR" property="deskNo" />
-    <result column="amount" jdbcType="INTEGER" property="amount" />
-    <result column="orderStatus" jdbcType="INTEGER" property="orderStatus" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, order_No, order_Seq, cust_Id, desk_No, amount, order_Status, create_Time, remark
-  </sql>
-  <select id="selectByCustomerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_order
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+	<resultMap id="BaseResultMap" type="com.bilin.crm.domain.Order">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
+		<result column="customer_id" jdbcType="BIGINT" property="customerId" />
+		<result column="desk_no" jdbcType="VARCHAR" property="deskNo" />
+		<result column="amount" jdbcType="INTEGER" property="amount" />
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+		<result column="back_status" jdbcType="INTEGER" property="backStatus" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, order_no, order_seq, customer_id, desk_no, amount, order_status,
+		back_status,
+		create_time, remark
+	</sql>
+	<select id="getNextOrderSeq" resultType="java.lang.Integer">
+		select max(order_seq)
+		from t_order
+	</select>
+
+	<select id="getOrderList" parameterType="com.bilin.crm.vo.OrderCondition"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_order
+		where 1=1
+		<if test="orderNo != null and orderNo != ''">
+			and order_no = #{orderNo,jdbcType=VARCHAR}
+		</if>
+		<if test="orderSeq != null and orderSeq != ''">
+			and order_seq = #{orderSeq,jdbcType=INTEGER}
+		</if>
+		<if test="customerId != null and customerId!=''">
+			and customerId = #{customerId,jdbcType=BIGINT}
+		</if>
+		<if test="deskNo != null">
+			and deskNo = #{deskNo,jdbcType=VARCHAR}
+		</if>
+		<if test="amount != null">
+			and amount = #{amount,jdbcType=INTEGER}
+		</if>
+		<if test="orderStatus != null">
+			and order_status = #{orderStatus,jdbcType=INTEGER}
+		</if>
+		<if test="backStatus != null">
+			and back_status = #{backStatus,jdbcType=INTEGER}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
 </mapper>

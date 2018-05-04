@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name = "t_order")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
     /**
      * ID
      */
@@ -51,9 +50,9 @@ public class Order implements Serializable {
      * 订单状态
      */
     private Integer orderStatus;
-    
+
     /**
-     * 订单状态
+     * 返款状态
      */
     private Integer backStatus;
 
@@ -123,16 +122,16 @@ public class Order implements Serializable {
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
     }
-    
-	public Integer getBackStatus() {
-		return backStatus;
-	}
 
-	public void setBackStatus(Integer backStatus) {
-		this.backStatus = backStatus;
-	}
+    public Integer getBackStatus() {
+        return backStatus;
+    }
 
-	public Date getCreateTime() {
+    public void setBackStatus(Integer backStatus) {
+        this.backStatus = backStatus;
+    }
+
+    public Date getCreateTime() {
         return createTime;
     }
 

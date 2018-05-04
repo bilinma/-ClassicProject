@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head> 
@@ -27,20 +28,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript"> 
 $.jqx.theme = 'ui-redmond';
-
 //下拉选项
 function getJqxSelectList(gropType){
 	var selectList = JSON.parse(
-			$.ajax({
+		$.ajax({
 			url : "dictionary/getByGroupType.do?groupType="+gropType, 
 			async : false,
 			datatype: "json",
 		}).responseText
 	);
 	var selectSource = {                 
-			datatype: "array",                 
-			datafields: [ { name: 'label', type: 'string' },{ name: 'value', type: 'string' } ],                 
-			localdata: selectList           
+		datatype: "array",                 
+		datafields: [ { name: 'label', type: 'string' },{ name: 'value', type: 'string' } ],                 
+		localdata: selectList           
 	};           
 	return new $.jqx.dataAdapter(selectSource, {autoBind: true});
 }

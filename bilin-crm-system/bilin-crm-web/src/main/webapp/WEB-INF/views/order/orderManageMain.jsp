@@ -10,35 +10,46 @@
   			document.getElementById("operateBtn").style.display = "none";
   		}
   		
-  		//是否下拉选项
-        var yesornolist = [{label:'是',value:1},{label:'否',value:0}];     
-        var yesornoSource = {                 
+  		//下拉选项
+        var orderStatusAdapter = getJqxSelectList('ORDER_STATUS');
+        var backStatusAdapter = getJqxSelectList('BACK_STATUS');
+        var customerList = JSON.parse(
+       		$.ajax({
+       			url : "customer/getCustomerSelect.do", 
+       			async : false,
+       			datatype: "json",
+       		}).responseText
+       	);
+       	var selectSource = {                 
        		datatype: "array",                 
        		datafields: [ { name: 'label', type: 'string' },{ name: 'value', type: 'string' } ],                 
-       		localdata: yesornolist           
-        };           
-        var yesornoAdapter = new $.jqx.dataAdapter(yesornoSource, {autoBind: true});
+       		localdata: customerList           
+       	};           
+       	var customerAdapter = new $.jqx.dataAdapter(selectSource, {autoBind: true});
         
-        var searchValue = $('#searchValue').val();
         var source = {
         	datatype: "json",
         	type:'post', 
             datafields: [
                 { name: 'id',type: 'string' },         
-                { name: 'code',type: 'string' },
-                { name: 'name', type: 'string' }, 
-                { name: 'telephone',type: 'string' }, 
-                { name: 'wechat',type: 'string' },
-                { name: 'level',type: 'string' },
-                { name: 'levelShow',value:'level',values: {source: yesornoAdapter.records, value: 'value', name: 'label'}},
-                { name: 'amountTotal',type:'string'},
+                { name: 'orderNo',type: 'string' },
+                { name: 'orderSeq', type: 'string' }, 
+                { name: 'customerId',type: 'string' }, 
+                { name: 'customerShow',value:'customerId',values: {source: customerAdapter.records, value: 'value', name: 'label'}},
+                { name: 'deskNo',type: 'string' },
+                { name: 'amount',type: 'string' },
+                { name: 'orderStatus',type: 'string' },
+                { name: 'orderStatusShow',value:'level',values: {source: orderStatusAdapter.records, value: 'value', name: 'label'}},
+                { name: 'backStatus',type:'string'},
+                { name: 'backStatusShow',value:'level',values: {source: backStatusAdapter.records, value: 'value', name: 'label'}},
                 { name: 'createTime',type:'string'},
+                { name: 'remark',type:'string'},
                 { name: 'operate', type: 'string' }
             ], 
             root:'result', 
             pagenum: 0,                 
             pagesize: 50,
-            data:{searchValue:searchValue}, 
+            data:{orderNo:$('#orderNoQuery').val()}, 
             pager: function (pagenum, pagesize, oldpagenum) { 
             	alert(pagenum);              
             }, 
@@ -80,13 +91,15 @@
             columns: [ 
               {text: '选择', datafield:'check', editable:true, columntype:'checkbox',align: 'center', width:60},                       
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
-              {text: '客户编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer}, 
-              {text: '客户名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
-              {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
-              {text: '微信',  datafield: 'wechat', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
-              {text: '客户等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
-              {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
+              {text: '订单序号',  datafield: 'orderSeq', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer}, 
+              {text: '订单编号',  datafield: 'orderNo', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
+              {text: '顾客',  datafield: 'customerId',displayfield: 'customerShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
+              {text: '桌号',  datafield: 'deskNo', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
+              {text: '消费金额',  datafield: 'amount', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
+              {text: '订单状态',  datafield: 'orderStatus',displayfield: 'orderStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
+              {text: '返款状态',  datafield: 'backStatus',displayfield: 'backStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
+              {text: '订单备注',  datafield: 'remark', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
               {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
             		  console.log(defaultHtml);
@@ -95,9 +108,9 @@
             	  buttonclick:function(row,owner){
                 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
                 		console.log(dataRecord);
-                		var name = dataRecord.name;
+                		var orderNo = dataRecord.orderNo;
                 		var id = dataRecord.id;
-                		if (window.confirm("该客户[" + name + "]将从列表中移除，请确认！")) {
+                		if (window.confirm("该订单[" + orderNo + "]将从列表中移除，请确认！")) {
                 			$.ajax({
                                 contentType: "application/json",   
                                 url: "order/deleteOrder.do",
@@ -122,16 +135,13 @@
             ]
         });
     	
-	    $("#searchValue").jqxInput({placeHolder: "客户姓名/电话", height: 20, width: 200, minLength: 1});
+	    $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
         
         $("#queryBtn").jqxButton({width: '100',height:'23'});
         function queryOrderList(){
-	    	var searchValue = $('#searchValue').val();
-		    if($('#searchValue').jqxInput('placeHolder')==$('#searchValue').val()){
-		    	searchValue='';
-		    }
+	    	var orderNo = $('#orderNoQuery').val();
 		    dataAdapter._source.data={ 
-		    	searchValue:searchValue,  
+		    	orderNo:orderNo,  
 		    } 
 		    $("#jqxgrid").jqxGrid({ source: dataAdapter });
 	    }
@@ -139,6 +149,19 @@
       
         $("#addOrderBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
         $("#addOrderBtn").on("click",function(){
+        	var orderNo = $.ajax({
+       			url : "order/getOrderNo.do", 
+       			async : false,
+       			datatype: "json",
+       		}).responseText
+       		$("#orderNo").val(orderNo);
+        	var orderSeq = $.ajax({
+       			url : "order/getNextOrderSeq.do", 
+       			async : false,
+       			datatype: "json",
+       		}).responseText
+       		$("#orderSeq").val(orderSeq);
+        	$("#amount").val(0);
         	$('#addOrderWin').jqxWindow('open'); 
         });
 		$("#addOrderWin").jqxWindow({ 
@@ -147,7 +170,7 @@
 			autoOpen:false,
 			showCollapseButton: true,
 			maxHeight: 600, 
-			maxWidth: 600, 
+			maxWidth: 700, 
 			minHeight: 200, 
 			minWidth: 400,
 			height: 500,
@@ -155,22 +178,19 @@
 		});
 		$("#confirmBtn").jqxButton({width: '100',height:'23'});
 		$('#confirmBtn').on('click',function(){
-			var name = $("#name").val();
-			if (!name) {
-				alert("姓名不能为空！")
+			var customerId = $('#customerIdSelect option:selected').val();
+			if (!customerId||customerId=='-1') {
+				alert("顾客不能为空！")
 				return ;
 			}
-            var telephone = $("#telephone").val();
-            if(!validateUtil.checkMobile(telephone)){
-        	  return; 
-            }
 	        $.ajax({
                 contentType: "application/json",   
                 url: "order/saveOrderData.do",
                 data: {
-                	name:name,
-                	telephone:telephone,
-                	wechat:$("#wechat").val(),
+                	orderNo:$("#orderNo").val(),
+                	orderSeq:$("#orderSeq").val(),
+                	customerId:customerId,
+                	deskNo:$("#deskNo").val(),
                 	remark:$("#remark").val(),
                 },    
                 dataType: "json", 
@@ -191,9 +211,8 @@
 		
 		$("#cancelBtn").jqxButton({width: '100',height:'23'});
 	    $('#cancelBtn').on('click',function(){
-	    	$("#name").val('');
-	    	$("#telephone").val('');
-	    	$('#tableName').val('');
+	    	$("#deskNo").val('');
+	    	$('#remark').val('');
 	    	$('#addOrderWin').jqxWindow('close');
 	    });
         
@@ -205,7 +224,7 @@
 <body id="customerMainBody">
 	<div align="left">
 		<div style="width: 600px; padding-left: 100px; float: left;">
-			<input type="text" id="searchValue" /> <input type="button" id="queryBtn" value="查询">
+			<input type="text" id="orderNoQuery" /> <input type="button" id="queryBtn" value="查询">
 		</div>
 		<div id="operateBtn">
 			<input type="button" id="addOrderBtn" value="新增"> 
@@ -223,24 +242,38 @@
 		<div>
 			<div id="addOrderTable">
 				<table class="register-table">
-					<!-- <tr>
-						<td>顾客编码:</td>
-						<td><input type="text" id="code" class="text-input" /><font color=red>*</font></td>
-					</tr> -->
 					<tr>
-						<td>名称:</td>
-						<td><input type="text" id="name" class="text-input" /><font color=red>*</font></td>
+						<td width="10%">订单编码:</td>
+						<td><input type="text" id="orderNo" class="text-input" readonly="readonly"/><font color=red>*</font></td>
 					</tr>
 					<tr>
-						<td>电话:</td>
-						<td><input type="text" id="telephone" class="text-input" /><font color=red>*</font></td>
+						<td width="10%">订单序号:</td>
+						<td><input type="text" id="orderSeq" class="text-input" readonly="readonly"/><font color=red>*</font></td>
 					</tr>
 					<tr>
-						<td>微信:</td>
-						<td><input type="text" id="wechat" class="text-input" /></td>
+						<td width="10%" class="td1" >顾客：</td>
+						<td align="left" >
+							<select id="customerIdSelect" style="WIDTH:170px">
+								<option value="-1">
+									--请选择--
+								</option>
+								<c:forEach items="${customerList}" var="customer" varStatus="status">
+									<option value="${customer.id}">${customer.name}</option>
+								</c:forEach>
+							</select>
+							<font color=red>*</font>
+						</td>
 					</tr>
 					<tr>
-						<td>备注:</td>
+						<td width="10%">桌号:</td>
+						<td><input type="text" id="deskNo" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td width="10%">消费金额:</td>
+						<td><input type="text" id="amount" class="text-input" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
+					</tr>					
+					<tr>
+						<td width="10%">备注:</td>
 						<td><textarea id="remark" cols=60 rows=15 style="overflow:auto"></textarea></td>
 					</tr>
 					<tr>

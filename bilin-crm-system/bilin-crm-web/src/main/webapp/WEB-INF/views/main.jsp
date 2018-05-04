@@ -34,7 +34,7 @@
 		  $("#jqxMenu").css('visibility', 'visible');  
 		  $("#mainContent").css({width:'100%',height:'100%'});
 		  //默认页 
-		  document.getElementById('mainContent').src = 'welcome.jsp';     
+		  document.getElementById('mainContent').src = 'order/init.do';     
 		}); 
 	  function logout(){
 		  window.location.href="logout.do";   
@@ -45,13 +45,8 @@
 	    <div id='jqxWidget' style='height:100px;'>             
 	    	<div id='jqxMenu' style='visibility: hidden;'>   
 	    		 <ul>
-<<<<<<< HEAD
 		    		 <li id="orderManage"><a href="order/init.do" target="mainContent" id="orderData">订单列表</a></li>
 		    		 <li id="customerManage"><a href="customer/init.do" target="mainContent" >客户管理</a></li>
-=======
-		    		 <li id="customerManage"><a href="customer/init.do" target="mainContent" >客户管理</a></li>
-		    		 <li><a href="order/init.do" target="mainContent" id="orderData">订单列表</a></li>
->>>>>>> 50218552965fec09485f8d12bd6eddf9fe071b37
 		    		 <li id="out"><a onClick="logout(1)" href="javascript:void(0)">退出</a></li>    
 	    		 </ul>   
 	    	</div>
