@@ -42,7 +42,7 @@
                 { name: 'orderStatusShow',value:'level',values: {source: orderStatusAdapter.records, value: 'value', name: 'label'}},
                 { name: 'backStatus',type:'string'},
                 { name: 'backStatusShow',value:'level',values: {source: backStatusAdapter.records, value: 'value', name: 'label'}},
-                { name: 'createTime',type:'string'},
+                { name: 'createTime',type:'date'},
                 { name: 'remark',type:'string'},
                 { name: 'operate', type: 'string' }
             ], 
@@ -98,7 +98,7 @@
               {text: '消费金额',  datafield: 'amount', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
               {text: '订单状态',  datafield: 'orderStatus',displayfield: 'orderStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '返款状态',  datafield: 'backStatus',displayfield: 'backStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
-              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
+              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
               {text: '订单备注',  datafield: 'remark', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
               {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){

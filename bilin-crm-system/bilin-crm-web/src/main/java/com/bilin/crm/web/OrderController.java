@@ -1,6 +1,5 @@
 package com.bilin.crm.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +21,7 @@ import com.bilin.crm.domain.User;
 import com.bilin.crm.service.ICustomerService;
 import com.bilin.crm.service.IOrderService;
 import com.bilin.crm.utils.CommonUtils;
-import com.bilin.crm.utils.DateUtils;
 import com.bilin.crm.vo.OrderCondition;
-import com.bilin.crm.vo.OrderVo;
 
 @Controller
 @RequestMapping(value = "/order")
@@ -52,19 +48,9 @@ public class OrderController {
 	@RequestMapping(value = "/getOrderList") 
 	@ResponseBody
 	public Object getOrderList(OrderCondition orderQuery) throws Exception { 
-		Map<String,List<OrderVo>> map = new HashMap<String, List<OrderVo>>(); 
+		Map<String,List<Order>> map = new HashMap<String, List<Order>>(); 
 		List<Order> dataList = orderService.getOrderList(orderQuery);
-		
-		List<OrderVo> orderVoList = new ArrayList<OrderVo>();
-		if(dataList!=null&&!dataList.isEmpty()){
-			for(Order order : dataList){
-				OrderVo orderVo = new OrderVo();
-				BeanUtils.copyProperties(order, orderVo);
-				orderVo.setCreateTime(DateUtils.formatDate(DateUtils.LONG_DATE, order.getCreateTime()));
-				orderVoList.add(orderVo);
-			}
-		}
-		map.put("result", orderVoList);
+		map.put("result", dataList);
 		return map; 
 	}
 	
