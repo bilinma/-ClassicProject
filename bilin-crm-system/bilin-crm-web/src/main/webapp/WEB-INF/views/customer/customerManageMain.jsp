@@ -94,7 +94,7 @@
                 		var id = dataRecord.id;
                 		if (window.confirm("该顾客[" + name + "]将从列表中移除，请确认！")) {
                 			$.ajax({
-                                contentType: "application/json",   
+                				contentType: "application/json; charset=utf-8",
                                 url: "customer/deleteCustomer.do",
                                 data: {id:id},    
                                 dataType: "json", 
@@ -162,6 +162,7 @@
 				return ;
 			}
 			var name = $("#name").val();
+			alert(name);
 			if (!name) {
 				alert("姓名不能为空！")
 				return ;
@@ -171,7 +172,7 @@
         	  return; 
             }
 	        $.ajax({
-                contentType: "application/json",   
+                contentType: "application/json; charset=utf-8",
                 url: "customer/saveCustomerData.do",
                 data: {
                 	code:code,

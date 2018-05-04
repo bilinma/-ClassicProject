@@ -112,7 +112,7 @@
                 		var id = dataRecord.id;
                 		if (window.confirm("该订单[" + orderNo + "]将从列表中移除，请确认！")) {
                 			$.ajax({
-                                contentType: "application/json",   
+                				contentType: "application/json; charset=utf-8",   
                                 url: "order/deleteOrder.do",
                                 data: {id:id},    
                                 dataType: "json", 
