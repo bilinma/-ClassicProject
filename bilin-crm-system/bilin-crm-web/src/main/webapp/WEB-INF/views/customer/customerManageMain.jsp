@@ -22,10 +22,11 @@
                 { name: 'name', type: 'string' }, 
                 { name: 'telephone',type: 'string' }, 
                 { name: 'wechat',type: 'string' },
+                { name: 'birthday',type: 'date' },
                 { name: 'level',type: 'string' },
                 { name: 'levelShow',value:'level',values: {source: custLevelAdapter.records, value: 'value', name: 'label'}},
                 { name: 'amountTotal',type:'string'},
-                { name: 'createTime',type:'string'},
+                { name: 'createTime',type:'date'},
                 { name: 'operate', type: 'string' }
             ], 
             root:'result', 
@@ -73,13 +74,14 @@
             columns: [ 
               {text: '选择', datafield:'check', editable:true, columntype:'checkbox',align: 'center', width:60},                       
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
-              {text: '客户编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer}, 
-              {text: '客户名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
+              {text: '顾客编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:true,cellsrenderer:cellsrenderer}, 
+              {text: '顾客姓名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer}, 
               {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer},
               {text: '微信',  datafield: 'wechat', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
-              {text: '客户等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
+              {text: '生日',  datafield: 'birthday', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsformat: 'yyyy-MM-dd',cellsrenderer:cellsrenderer},
+              {text: '顾客等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
-              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
+              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
               {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
             		  console.log(defaultHtml);
@@ -90,7 +92,7 @@
                 		console.log(dataRecord);
                 		var name = dataRecord.name;
                 		var id = dataRecord.id;
-                		if (window.confirm("该客户[" + name + "]将从列表中移除，请确认！")) {
+                		if (window.confirm("该顾客[" + name + "]将从列表中移除，请确认！")) {
                 			$.ajax({
                                 contentType: "application/json",   
                                 url: "customer/deleteCustomer.do",
@@ -115,7 +117,7 @@
             ]
         });
     	
-	    $("#searchValue").jqxInput({placeHolder: "客户姓名/电话", height: 20, width: 200, minLength: 1});
+	    $("#searchValue").jqxInput({placeHolder: "顾客姓名/电话", height: 20, width: 200, minLength: 1});
         
         $("#queryBtn").jqxButton({width: '100',height:'23'});
         function queryCustomerList(){
@@ -151,6 +153,7 @@
 			height: 500,
 			width: 1000,
 		});
+		$("#birthday").jqxDateTimeInput({ width: '250px', height: '23px' });
 		$("#confirmBtn").jqxButton({width: '100',height:'23'});
 		$('#confirmBtn').on('click',function(){
 			var code = $("#code").val();
@@ -174,6 +177,7 @@
                 	code:code,
                 	name:name,
                 	telephone:telephone,
+                	birthday:$('#birthday').jqxDateTimeInput('getDate'),
                 	wechat:$("#wechat").val(),
                 	remark:$("#remark").val(),
                 },    
@@ -234,12 +238,16 @@
 						<td><input type="text" id="code" class="text-input" /><font color=red>*</font></td>
 					</tr>
 					<tr>
-						<td>名称:</td>
+						<td>顾客姓名:</td>
 						<td><input type="text" id="name" class="text-input" /><font color=red>*</font></td>
 					</tr>
 					<tr>
-						<td>电话:</td>
+						<td>手机号码:</td>
 						<td><input type="text" id="telephone" class="text-input" /><font color=red>*</font></td>
+					</tr>
+					<tr>
+						<td>生日:</td>
+						<td><div id="birthday"/></td>
 					</tr>
 					<tr>
 						<td>微信:</td>

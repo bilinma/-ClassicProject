@@ -45,6 +45,8 @@ public class Customer implements Serializable {
      * 微信号
      */
     private String wechat;
+    
+    private Date birthday;
 
     /**
      * 客户等级
@@ -114,6 +116,14 @@ public class Customer implements Serializable {
 
 	public void setWechat(String wechat) {
 		this.wechat = wechat;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public Integer getLevel() {

@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,7 @@ import com.bilin.crm.common.UserUtils;
 import com.bilin.crm.domain.Customer;
 import com.bilin.crm.domain.User;
 import com.bilin.crm.service.ICustomerService;
-import com.bilin.crm.utils.DateUtils;
-import com.bilin.crm.vo.CustomerVo;
+import com.bilin.crm.utils.PinYinConvertJPUtil;
 
 @Controller
 @RequestMapping(value = "/customer")
@@ -39,25 +37,12 @@ public class CustomerController {
 		return "customer/customerManageMain";
 	}
 
-	
-	
-	//前台做定义时 注意：把系统表放在最前面 序号为0 其它表序号从1开始
 	@RequestMapping(value = "/getCustomerList") 
 	@ResponseBody
 	public Object getCustomerList(String searchValue) throws Exception { 
-		Map<String,List<CustomerVo>> map = new HashMap<String, List<CustomerVo>>(); 
+		Map<String,List<Customer>> map = new HashMap<String, List<Customer>>(); 
 		List<Customer> dataList = customerService.getCustomerList(searchValue);
-		
-		List<CustomerVo> customerVoList = new ArrayList<CustomerVo>();
-		if(dataList!=null&&!dataList.isEmpty()){
-			for(Customer customer : dataList){
-				CustomerVo customerVo = new CustomerVo();
-				BeanUtils.copyProperties(customer, customerVo);
-				customerVo.setCreateTime(DateUtils.formatDate(DateUtils.LONG_DATE, customer.getCreateTime()));
-				customerVoList.add(customerVo);
-			}
-		}
-		map.put("result", customerVoList);
+		map.put("result", dataList);
 		return map; 
 	}
 	
@@ -71,6 +56,7 @@ public class CustomerController {
 			customer.setCreateTime(new Date());
 			customer.setLevel(1);
 			customer.setAmountTotal(0);
+			customer.setPinyinName(PinYinConvertJPUtil.changeToTonePinYin(customer.getName()));
 			int retMsg = customerService.saveCustomer(customer);
 			retMap.put("successFlag", true);
 			retMap.put("retMsg", retMsg);
