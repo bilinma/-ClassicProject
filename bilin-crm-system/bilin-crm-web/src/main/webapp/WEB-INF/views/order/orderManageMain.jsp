@@ -61,13 +61,21 @@
             root:'result' 
         }; 
         var dataAdapter = new $.jqx.dataAdapter(source, {
-            downloadComplete: function (data, status, xhr) { },
-            loadComplete: function (data) {
-            	orignalData = data;
-            },
-            loadError: function (xhr, status, error) {
-            	alert(error);
-            }
+        	downloadComplete: function (data, status, xhr) {
+                if (!source.totalRecords) {
+                    source.totalRecords = data.length;
+                }
+				for(var i=0;i<data.result.length;i++){
+					data.result[i].check=0; 
+				}
+				return data;
+			},
+			loadComplete: function (data) {
+				
+			},
+			loadError: function (xhr, status, error) {
+				alert(error);
+			}  
         });
         var cellsrenderer = function (row, columnfield, value, defaultHtml, columnproperties, rowdata) {
             var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
@@ -109,16 +117,16 @@
             pagesizeoptions:[50,100,200],  
             pagesize: 50, 
             columns: [ 
-              {text: '选择', datafield:'check', editable:true, columntype:'checkbox',align: 'center', width:60},                       
+              {text: '选择', datafield: 'check',columntype:'checkbox',align: 'center',width: 60 },                     
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'center', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
               {text: '订单序号',  datafield: 'orderSeq', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer}, 
               {text: '订单编号',  datafield: 'orderNo', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
               {text: '顾客',  datafield: 'customerId',displayfield: 'customerShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
-              {text: '桌号',  datafield: 'deskNo', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
-              {text: '消费金额',  datafield: 'amount', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
+              {text: '桌号',  datafield: 'deskNo', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer},
+              {text: '消费金额',  datafield: 'amount', align: 'center', cellsalign: 'right', width: 100,editable:false,cellsrenderer:cellsrenderer},
               {text: '订单状态',  datafield: 'orderStatus',displayfield: 'orderStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '返款状态',  datafield: 'backStatus',displayfield: 'backStatusShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
-              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
+              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'center', width: 160,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
               {text: '订单备注',  datafield: 'remark', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
               {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
@@ -168,12 +176,29 @@
     	                 dataType: "json", 
     	                 data: {orderNo:value},
     	                 success: function(data){
-    	                	 alert(data.orderNo)
-    	                	 $('#addOrderWin').jqxWindow('open'); 
+    	                	$("#m_orderNo").val(data.orderNo);
+    	                	$("#m_orderSeq").val(data.orderSeq);
+    	                 	$("#m_amount").val(data.amount);
+    	         	    	$("#m_deskNo").val(data.deskNo);
+    	         	    	$('#m_remark').val(data.remark);
+    	                	$('#modifyOrderWin').jqxWindow('open'); 
     	                 }
     				});    	                 
     		    }
      	});
+        
+		$("#modifyOrderWin").jqxWindow({ 
+			title: "创建订单", 
+			isModal: true,
+			autoOpen:false,
+			showCollapseButton: true,
+			maxHeight: 600, 
+			maxWidth: 700, 
+			minHeight: 200, 
+			minWidth: 400,
+			height: 500,
+			width: 1000,
+		});
         
         
 	    $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
@@ -202,7 +227,6 @@
        			datatype: "json",
        		}).responseText
        		$("#orderSeq").val(orderSeq);
-        	$('#customerIdSelect option:selected').val('-1')
         	$("#amount").val(0);
 	    	$("#deskNo").val('');
 	    	$('#remark').val('');
@@ -367,13 +391,13 @@
 					<tr>
 						<td width="10%" class="td1" >订单状态：</td>
 						<td align="left" >
-							<div id='orderStatusSelect'></div>
+							<div id='m_orderStatusSelect'></div>
 						</td>
 					</tr>
 					<tr>
 						<td width="10%" class="td1" >返款状态：</td>
 						<td align="left" >
-							<div id='backStatusSelect'></div>
+							<div id='m_backStatusSelect'></div>
 						</td>
 					</tr>
 					<tr>
@@ -382,8 +406,8 @@
 					</tr>
 					<tr>
 						<td height=30 colspan="4" align="center">
-							<input type="button" id="m_confirmBtn" value="修改保存" style="margin-right: 10px" />
-							<input type="button" id="m_cancelBtn" value="取消" />
+							<input type="button" id="modifyOrderBtn" value="修改保存" style="margin-right: 10px" />
+							<input type="button" id="modifycancelBtn" value="取消" />
 						</td>
 					</tr>					
 				</table>

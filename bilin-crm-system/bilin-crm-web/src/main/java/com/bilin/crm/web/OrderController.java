@@ -60,7 +60,7 @@ public class OrderController {
 		Map<String, Object> retMap = new HashMap<String, Object>();
 		try{
 			order.setCreateTime(new Date());
-			order.setOrderStatus(0);
+			order.setOrderStatus(1);
 			order.setBackStatus(1);
 			orderService.saveOrder(order);
 			retMap.put("successFlag", true);
@@ -114,6 +114,8 @@ public class OrderController {
 			orderSeq = orderService.getNextOrderSeq();
 			if(orderSeq==null){
 				orderSeq = 1;
+			}else{
+				orderSeq += 1;
 			}
 		}catch(Exception e){
 			e.printStackTrace();
