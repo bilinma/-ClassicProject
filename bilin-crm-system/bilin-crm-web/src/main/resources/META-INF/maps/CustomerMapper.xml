@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bilin.crm.dao.CustomerMapper">
-  <resultMap id="BaseResultMap" type="com.bilin.crm.domain.Customer">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="pinyin_name" jdbcType="VARCHAR" property="pinyinName" />
-    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
-    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
-    <result column="birthday" jdbcType="DATE" property="birthday" />
-    <result column="level" jdbcType="INTEGER" property="level" />
-    <result column="amount_total" jdbcType="INTEGER" property="amountTotal" />
-    <result column="is_back" jdbcType="INTEGER" property="isBack" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, code, name, pinyin_name, telephone, wechat, birthday, level, amount_total, is_back, create_time
-  </sql>
-  
-  <select id="getCustomerList" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_customer
-    where 1=1
-    <if test="searchValue != null">
-      and (name like CONCAT('%', #{searchValue},'%') or telephone like CONCAT('%', #{searchValue},'%'))
-    </if>
-  </select>
+	<resultMap id="BaseResultMap" type="com.bilin.crm.domain.Customer">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="code" jdbcType="VARCHAR" property="code" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="pinyin_name" jdbcType="VARCHAR" property="pinyinName" />
+		<result column="telephone" jdbcType="VARCHAR" property="telephone" />
+		<result column="wechat" jdbcType="VARCHAR" property="wechat" />
+		<result column="birthday" jdbcType="DATE" property="birthday" />
+		<result column="level" jdbcType="INTEGER" property="level" />
+		<result column="amount_total" jdbcType="INTEGER" property="amountTotal" />
+		<result column="is_back" jdbcType="INTEGER" property="isBack" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, code, name, pinyin_name, telephone, wechat, birthday,
+		level,
+		amount_total, is_back, create_time
+	</sql>
+
+	<sql id="where_Query_Condition">
+		<where>
+			1=1
+			<if test="searchValue != null">
+				and (name like CONCAT('%', #{searchValue},'%') or
+				telephone like CONCAT('%', #{searchValue},'%'))
+			</if>
+		</where>
+	</sql>
+
+	<select id="getCustomerList" parameterType="com.bilin.crm.vo.CustomerCondition"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_customer
+		<include refid="where_Query_Condition" />
+		limit #{stratRow},#{pagesize}
+	</select>
+
+	<select id="getCustomerListCount" parameterType="com.bilin.crm.vo.CustomerCondition" resultType="int">
+		select count(1)
+		<include refid="Base_Column_List" />
+		from t_customer
+		<include refid="where_Query_Condition" />
+	</select>
+	
+	<select id="getCustomerSelectList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_customer
+	</select>
 </mapper>

@@ -15,9 +15,11 @@
         var searchValue = $('#searchValue').val();
         var source = {
         	datatype: "json",
-        	type:'post', 
+        	type:'post',
+        	cache: false,
             datafields: [
                 { name: 'id',type: 'string' },         
+                { name: 'check',type: 'string' },                         
                 { name: 'code',type: 'string' },
                 { name: 'name', type: 'string' }, 
                 { name: 'telephone',type: 'string' }, 
@@ -30,22 +32,34 @@
                 { name: 'operate', type: 'string' }
             ], 
             root:'result', 
-            pagenum: 0,                 
-            pagesize: 50,
-            data:{searchValue:searchValue}, 
+            data:{searchValue:searchValue},
+            beforeprocessing: function(data) {
+               	debugger;
+                if (data != null) {
+                    source.totalrecords = data.totalRecords;
+                }
+            },
             pager: function (pagenum, pagesize, oldpagenum) { 
             	alert(pagenum);              
             }, 
             url: "customer/getCustomerList.do"
         }; 
         var dataAdapter = new $.jqx.dataAdapter(source, {
-            downloadComplete: function (data, status, xhr) { },
-            loadComplete: function (data) {
-            	orignalData = data;
-            },
-            loadError: function (xhr, status, error) {
-            	alert(error);
-            }
+			downloadComplete: function (data, status, xhr) {
+                if (!source.totalRecords) {
+                    source.totalRecords = data.length;
+                }
+				for(var i=0;i<data.result.length;i++){
+					data.result[i].check=0; 
+				}
+				return data;
+			},
+			loadComplete: function (data) {
+				
+			},
+			loadError: function (xhr, status, error) {
+				alert(error);
+			}  
         });
         var cellsrenderer = function (row, columnfield, value, defaultHtml, columnproperties, rowdata) {
             var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
@@ -68,11 +82,15 @@
             sortable: true,
             editable: editable, 
             columnsresize: true,
+            virtualmode: true,
+            rendergridrows: function(obj) {
+                return obj.data;
+            },
             localization: getLocalization(),  
             pagesizeoptions:[50,100,200],  
             pagesize: 50,  
             columns: [ 
-              {text: '选择', datafield:'check', editable:true, columntype:'checkbox',align: 'center', width:60},                       
+              {text: '选择',  datafield: 'check',columntype:'checkbox',align: 'center',width: 60 },                       
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
               {text: '顾客编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:true,cellsrenderer:cellsrenderer}, 
               {text: '顾客姓名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer}, 
@@ -162,7 +180,6 @@
 				return ;
 			}
 			var name = $("#name").val();
-			alert(name);
 			if (!name) {
 				alert("姓名不能为空！")
 				return ;

@@ -20,6 +20,7 @@ import com.bilin.crm.domain.Customer;
 import com.bilin.crm.domain.User;
 import com.bilin.crm.service.ICustomerService;
 import com.bilin.crm.utils.PinYinConvertJPUtil;
+import com.bilin.crm.vo.CustomerCondition;
 
 @Controller
 @RequestMapping(value = "/customer")
@@ -39,9 +40,12 @@ public class CustomerController {
 
 	@RequestMapping(value = "/getCustomerList") 
 	@ResponseBody
-	public Object getCustomerList(String searchValue) throws Exception { 
-		Map<String,List<Customer>> map = new HashMap<String, List<Customer>>(); 
-		List<Customer> dataList = customerService.getCustomerList(searchValue);
+	public Object getCustomerList(CustomerCondition customerCondition) throws Exception {
+		customerCondition.setStratRow();
+		List<Customer> dataList = customerService.getCustomerList(customerCondition);
+		int totalRecords =  customerService.getCustomerListCount(customerCondition); 
+		Map<String,Object> map = new HashMap<String, Object>(); 
+		map.put("totalRecords", totalRecords);
 		map.put("result", dataList);
 		return map; 
 	}
@@ -85,7 +89,7 @@ public class CustomerController {
 	@ResponseBody
 	@RequestMapping(value = "/getCustomerSelect")
 	public List<Map<String,Object>> getCustomerSelect(){
-		List<Customer> dataList = customerService.getCustomerList(null);
+		List<Customer> dataList = customerService.getCustomerSelectList();
 		List<Map<String,Object>> retlist = new ArrayList<Map<String,Object>>();
 		for(Customer customer : dataList){
 			Map<String,Object> map = new HashMap<String,Object>();

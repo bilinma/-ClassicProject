@@ -1,21 +1,18 @@
 package com.bilin.crm.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Id;
+import com.bilin.crm.request.PageRequest;
 
 /**
- * t_order
  * @author 
  */
-public class OrderCondition implements Serializable {
+public class OrderCondition extends PageRequest{
 	private static final long serialVersionUID = 1L;
 	
     /**
      * ID
      */
-	@Id
     private Long id;
 
     /**
