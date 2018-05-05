@@ -31,7 +31,8 @@
         	datatype: "json",
         	type:'post', 
             datafields: [
-                { name: 'id',type: 'string' },         
+                { name: 'id',type: 'string' },
+                { name: 'check',type: 'string' },
                 { name: 'orderNo',type: 'string' },
                 { name: 'orderSeq', type: 'string' }, 
                 { name: 'customerId',type: 'string' }, 

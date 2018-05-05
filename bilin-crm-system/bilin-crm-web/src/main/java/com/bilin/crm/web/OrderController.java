@@ -37,7 +37,7 @@ public class OrderController {
 	public String forwardConfigMain(HttpServletRequest request,Model model) {
 		User user  = UserUtils.getCurrentUser();
 		request.setAttribute("roleCode", user.getRoleCode());
-		List<Customer> dataList = customerService.getCustomerList(null);
+		List<Customer> dataList = customerService.getCustomerSelectList();
 		model.addAttribute("customerList", dataList);
 		return "order/orderManageMain";
 	}
