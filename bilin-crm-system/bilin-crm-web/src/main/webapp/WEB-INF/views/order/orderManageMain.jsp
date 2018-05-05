@@ -209,7 +209,7 @@
         	$('#addOrderWin').jqxWindow('open'); 
         });
 		$("#addOrderWin").jqxWindow({ 
-			title: "添加顾客信息", 
+			title: "创建订单", 
 			isModal: true,
 			autoOpen:false,
 			showCollapseButton: true,
