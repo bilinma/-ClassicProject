@@ -89,4 +89,11 @@
 		    WHERE order_status = 1
 		      AND back_status = 1) a) 
 	</update>
+	
+	<select id="getOrderByOrderNo" parameterType="string" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_order 
+		where order_no = #{orderNo,jdbcType=VARCHAR}
+	</select>	
 </mapper>

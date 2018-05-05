@@ -168,6 +168,7 @@
     	                 dataType: "json", 
     	                 data: {orderNo:value},
     	                 success: function(data){
+    	                	 alert(data.orderNo)
     	                	 $('#addOrderWin').jqxWindow('open'); 
     	                 }
     				});    	                 
@@ -275,8 +276,6 @@
 	</div>
 	<div id="operateBtn">
 		<input type="button" id="addOrderBtn" value="新增">
-		<input type="button" id="modifyOrderBtn" value="详情">
-		<input type="button" id="confirmBackBtn" value="确认返款">
 	</div>
 
 	<div id='jqxWidget' align="center"
@@ -333,4 +332,62 @@
 			</div> 
 		</div>
 	</div>
+	
+	<div id="modifyOrderWin" style="display: none;">
+		<div>
+			<div id="modifyOrderTable">
+				<table class="register-table">
+					<tr>
+						<td width="10%">订单编码:</td>
+						<td><input type="text" id="m_orderNo" class="text-input" readonly="readonly"/><font color=red>*</font></td>
+					</tr>
+					<tr>
+						<td width="10%">订单序号:</td>
+						<td><input type="text" id="m_orderSeq" class="text-input" readonly="readonly"/><font color=red>*</font></td>
+					</tr>
+					<tr>
+						<td width="10%" class="td1" >顾客：</td>
+						<td align="left" >
+							<select id="m_customerIdSelect" style="WIDTH:170px">
+								<c:forEach items="${customerList}" var="customer" varStatus="status">
+									<option value="${customer.id}">${customer.name}</option>
+								</c:forEach>
+							</select>
+							<font color=red>*</font>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%">桌号:</td>
+						<td><input type="text" id="m_deskNo" class="text-input" maxlength="5"/></td>
+					</tr>
+					<tr>
+						<td width="10%">消费金额:</td>
+						<td><input type="text" id="m_amount" class="text-input" maxlength="5" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
+					</tr>
+					<tr>
+						<td width="10%" class="td1" >订单状态：</td>
+						<td align="left" >
+							<div id='orderStatusSelect'></div>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%" class="td1" >返款状态：</td>
+						<td align="left" >
+							<div id='backStatusSelect'></div>
+						</td>
+					</tr>
+					<tr>
+						<td width="10%">备注:</td>
+						<td><textarea id="m_remark" cols=60 rows=15 maxlength="200" style="overflow:auto"></textarea></td>
+					</tr>
+					<tr>
+						<td height=30 colspan="4" align="center">
+							<input type="button" id="m_confirmBtn" value="修改保存" style="margin-right: 10px" />
+							<input type="button" id="m_cancelBtn" value="取消" />
+						</td>
+					</tr>					
+				</table>
+			</div> 
+		</div>
+	</div>	
 </body>
