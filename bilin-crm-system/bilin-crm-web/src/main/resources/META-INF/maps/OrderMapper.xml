@@ -61,6 +61,7 @@
 		<include refid="Base_Column_List" />
 		from t_order
 		<include refid="where_Query_Condition" />
+		order by create_time desc 
 		limit #{stratRow},#{pagesize}
 	</select>
 
@@ -71,4 +72,21 @@
 		<include refid="where_Query_Condition" />
 		limit #{stratRow},#{pagesize}
 	</select>
+	
+	<update id="updateMinUnBackOrder">
+		UPDATE
+		  t_order
+		SET
+		  back_status = 2
+		WHERE order_seq =
+		  (SELECT
+		    order_seq
+		  FROM
+		    (SELECT
+		      MIN(order_seq)
+		    FROM
+		      t_order
+		    WHERE order_status = 1
+		      AND back_status = 1) a) 
+	</update>
 </mapper>

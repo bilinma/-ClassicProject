@@ -252,11 +252,11 @@
 				<table class="register-table">
 					<tr>
 						<td>顾客编码:</td>
-						<td><input type="text" id="code" class="text-input" /><font color=red>*</font></td>
+						<td><input type="text" id="code" class="text-input" maxlength="5"/><font color=red>*</font></td>
 					</tr>
 					<tr>
 						<td>顾客姓名:</td>
-						<td><input type="text" id="name" class="text-input" /><font color=red>*</font></td>
+						<td><input type="text" id="name" class="text-input" maxlength="10"/><font color=red>*</font></td>
 					</tr>
 					<tr>
 						<td>手机号码:</td>
@@ -268,11 +268,11 @@
 					</tr>
 					<tr>
 						<td>微信:</td>
-						<td><input type="text" id="wechat" class="text-input" /></td>
+						<td><input type="text" id="wechat" class="text-input" maxlength="10"/></td>
 					</tr>
 					<tr>
 						<td>备注:</td>
-						<td><textarea id="remark" cols=60 rows=15 style="overflow:auto"></textarea></td>
+						<td><textarea id="remark" cols=60 rows=15 maxlength="200" style="overflow:auto"></textarea></td>
 					</tr>
 					<tr>
 						<td height=30 colspan="4" align="center">

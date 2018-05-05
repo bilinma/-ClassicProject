@@ -59,12 +59,12 @@ public class OrderController {
 	public Map<String, Object> saveOrderData(Order order) {
 		Map<String, Object> retMap = new HashMap<String, Object>();
 		try{
-			//JSONObject jsonObject = JSONObject.fromObject(rowDataRecord); 
-			//Map<String, Object> objMap = (Map<String, Object>)JSONObject.toBean(jsonObject, Map.class);
 			order.setCreateTime(new Date());
-			int retMsg = orderService.saveOrder(order);
+			order.setOrderStatus(0);
+			order.setBackStatus(1);
+			orderService.saveOrder(order);
 			retMap.put("successFlag", true);
-			retMap.put("retMsg", retMsg);
+			retMap.put("retMsg", "保存成功！");
 		}catch(Exception e){
 			e.printStackTrace();
 			retMap.put("successFlag", false);
@@ -97,6 +97,13 @@ public class OrderController {
 			return e.getMessage();
 		}
 		return orderNo;
+	}
+	
+	@RequestMapping(value = "/getOrderByOrderNo") 
+	@ResponseBody
+	public Order getOrderByOrderNo(String orderNo) {
+		Order order = orderService.getOrderByOrderNo(orderNo);
+		return order;
 	}
 	
 	@RequestMapping(value = "/getNextOrderSeq") 

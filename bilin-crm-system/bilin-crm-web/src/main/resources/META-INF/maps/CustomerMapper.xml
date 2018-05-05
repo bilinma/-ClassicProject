@@ -37,6 +37,7 @@
 		<include refid="Base_Column_List" />
 		from t_customer
 		<include refid="where_Query_Condition" />
+		order by create_time
 		limit #{stratRow},#{pagesize}
 	</select>
 

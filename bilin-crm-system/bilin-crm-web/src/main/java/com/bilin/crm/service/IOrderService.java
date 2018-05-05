@@ -9,12 +9,14 @@ public interface IOrderService {
 
 	public void deleteOrder(Long id);
 
-	public int saveOrder(Order order);
+	public void saveOrder(Order order);
 
 	public List<Order> getOrderList(OrderCondition orderQuery);
 
 	public Integer getNextOrderSeq();
 
 	public int getOrderListCount(OrderCondition orderCondition);
+
+	public Order getOrderByOrderNo(String orderNo);
 
 }

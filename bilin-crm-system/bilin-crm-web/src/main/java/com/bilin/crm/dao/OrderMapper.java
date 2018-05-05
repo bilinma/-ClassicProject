@@ -13,4 +13,8 @@ public interface OrderMapper extends BaseMapper<Order>{
 
 	public int getOrderListCount(OrderCondition orderCondition);
 
+	public void updateMinUnBackOrder();
+
+	public Order getOrderByOrderNo(String orderNo);
+
 }

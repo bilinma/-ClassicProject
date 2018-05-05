@@ -40,9 +40,9 @@
                 { name: 'deskNo',type: 'string' },
                 { name: 'amount',type: 'string' },
                 { name: 'orderStatus',type: 'string' },
-                { name: 'orderStatusShow',value:'level',values: {source: orderStatusAdapter.records, value: 'value', name: 'label'}},
+                { name: 'orderStatusShow',value:'orderStatus',values: {source: orderStatusAdapter.records, value: 'value', name: 'label'}},
                 { name: 'backStatus',type:'string'},
-                { name: 'backStatusShow',value:'level',values: {source: backStatusAdapter.records, value: 'value', name: 'label'}},
+                { name: 'backStatusShow',value:'backStatus',values: {source: backStatusAdapter.records, value: 'value', name: 'label'}},
                 { name: 'createTime',type:'date'},
                 { name: 'remark',type:'string'},
                 { name: 'operate', type: 'string' }
@@ -71,7 +71,18 @@
         });
         var cellsrenderer = function (row, columnfield, value, defaultHtml, columnproperties, rowdata) {
             var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-            return defaultHtml;
+			var orderStatus = dataRecord.orderStatus;
+			var backStatus = dataRecord.backStatus;
+			if(orderStatus=='1'){
+				var element = $(defaultHtml);
+				element.css('color', '#F5081A');
+				return element[0].outerHTML;
+			}else if(orderStatus=='2'&& backStatus=='2'){
+				var element = $(defaultHtml);
+				element.css('color', '#1A9709');
+				return element[0].outerHTML;
+			}
+			return defaultHtml;
         }
         
         var getLocalization = function () {               
@@ -96,10 +107,10 @@
             },
             localization: getLocalization(),  
             pagesizeoptions:[50,100,200],  
-            pagesize: 50,  
+            pagesize: 50, 
             columns: [ 
               {text: '选择', datafield:'check', editable:true, columntype:'checkbox',align: 'center', width:60},                       
-              {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
+              {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'center', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
               {text: '订单序号',  datafield: 'orderSeq', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer}, 
               {text: '订单编号',  datafield: 'orderNo', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
               {text: '顾客',  datafield: 'customerId',displayfield: 'customerShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
@@ -143,7 +154,27 @@
               } 
             ]
         });
-    	
+        $("#jqxgrid").on("cellclick", function (event){
+    		    // event arguments.
+    		    var args = event.args;
+    		    // column data field.
+    		    var dataField = args.datafield;
+    		    // cell value
+    		    var value = args.value;
+    		    if(dataField=="orderNo"){
+    				$.ajax({
+    	                 contentType: "application/json",   
+    	                 url: "order/getOrderByOrderNo.do",
+    	                 dataType: "json", 
+    	                 data: {orderNo:value},
+    	                 success: function(data){
+    	                	 $('#addOrderWin').jqxWindow('open'); 
+    	                 }
+    				});    	                 
+    		    }
+     	});
+        
+        
 	    $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
         
         $("#queryBtn").jqxButton({width: '100',height:'23'});
@@ -170,7 +201,10 @@
        			datatype: "json",
        		}).responseText
        		$("#orderSeq").val(orderSeq);
+        	$('#customerIdSelect option:selected').val('-1')
         	$("#amount").val(0);
+	    	$("#deskNo").val('');
+	    	$('#remark').val('');
         	$('#addOrderWin').jqxWindow('open'); 
         });
 		$("#addOrderWin").jqxWindow({ 
@@ -200,6 +234,7 @@
                 	orderSeq:$("#orderSeq").val(),
                 	customerId:customerId,
                 	deskNo:$("#deskNo").val(),
+                	amount:$("#amount").val(),
                 	remark:$("#remark").val(),
                 },    
                 dataType: "json", 
@@ -220,7 +255,9 @@
 		
 		$("#cancelBtn").jqxButton({width: '100',height:'23'});
 	    $('#cancelBtn').on('click',function(){
+	    	$('#customerIdSelect option:selected').val('-1')
 	    	$("#deskNo").val('');
+	    	$("#amount").val(''),
 	    	$('#remark').val('');
 	    	$('#addOrderWin').jqxWindow('close');
 	    });
@@ -233,12 +270,13 @@
 <body id="customerMainBody">
 	<div align="left">
 		<div style="width: 600px; padding-left: 100px; float: left;">
-			<input type="text" id="orderNoQuery" /> <input type="button" id="queryBtn" value="查询">
+			<input type="text" id="orderNoQuery" /><input type="text" id="orderStatusQuery" /> <input type="button" id="queryBtn" value="查询">
 		</div>
-		<div id="operateBtn">
-			<input type="button" id="addOrderBtn" value="新增"> 
-			<input type="button" id="modifyOrderBtn" value="修改">
-		</div>
+	</div>
+	<div id="operateBtn">
+		<input type="button" id="addOrderBtn" value="新增">
+		<input type="button" id="modifyOrderBtn" value="详情">
+		<input type="button" id="confirmBackBtn" value="确认返款">
 	</div>
 
 	<div id='jqxWidget' align="center"
@@ -275,15 +313,15 @@
 					</tr>
 					<tr>
 						<td width="10%">桌号:</td>
-						<td><input type="text" id="deskNo" class="text-input" /></td>
+						<td><input type="text" id="deskNo" class="text-input" maxlength="5"/></td>
 					</tr>
 					<tr>
 						<td width="10%">消费金额:</td>
-						<td><input type="text" id="amount" class="text-input" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
+						<td><input type="text" id="amount" class="text-input" maxlength="5" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
 					</tr>					
 					<tr>
 						<td width="10%">备注:</td>
-						<td><textarea id="remark" cols=60 rows=15 style="overflow:auto"></textarea></td>
+						<td><textarea id="remark" cols=60 rows=15 maxlength="200" style="overflow:auto"></textarea></td>
 					</tr>
 					<tr>
 						<td height=30 colspan="4" align="center">
