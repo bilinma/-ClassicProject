@@ -14,7 +14,8 @@
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, order_no, order_seq, customer_id, desk_no, amount, order_status,
+		id, order_no, order_seq, customer_id, desk_no, amount,
+		order_status,
 		back_status,
 		create_time, remark
 	</sql>
@@ -23,35 +24,51 @@
 		from t_order
 	</select>
 
+	<sql id="where_Query_Condition">
+		<where>
+			1=1
+			<if test="orderNo != null and orderNo != ''">
+				and order_no = #{orderNo,jdbcType=VARCHAR}
+			</if>
+			<if test="orderSeq != null and orderSeq != ''">
+				and order_seq = #{orderSeq,jdbcType=INTEGER}
+			</if>
+			<if test="customerId != null and customerId!=''">
+				and customerId = #{customerId,jdbcType=BIGINT}
+			</if>
+			<if test="deskNo != null">
+				and deskNo = #{deskNo,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+				and amount = #{amount,jdbcType=INTEGER}
+			</if>
+			<if test="orderStatus != null">
+				and order_status = #{orderStatus,jdbcType=INTEGER}
+			</if>
+			<if test="backStatus != null">
+				and back_status = #{backStatus,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</sql>
+
+
 	<select id="getOrderList" parameterType="com.bilin.crm.vo.OrderCondition"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from t_order
-		where 1=1
-		<if test="orderNo != null and orderNo != ''">
-			and order_no = #{orderNo,jdbcType=VARCHAR}
-		</if>
-		<if test="orderSeq != null and orderSeq != ''">
-			and order_seq = #{orderSeq,jdbcType=INTEGER}
-		</if>
-		<if test="customerId != null and customerId!=''">
-			and customerId = #{customerId,jdbcType=BIGINT}
-		</if>
-		<if test="deskNo != null">
-			and deskNo = #{deskNo,jdbcType=VARCHAR}
-		</if>
-		<if test="amount != null">
-			and amount = #{amount,jdbcType=INTEGER}
-		</if>
-		<if test="orderStatus != null">
-			and order_status = #{orderStatus,jdbcType=INTEGER}
-		</if>
-		<if test="backStatus != null">
-			and back_status = #{backStatus,jdbcType=INTEGER}
-		</if>
-		<if test="createTime != null">
-			and create_time = #{createTime,jdbcType=TIMESTAMP}
-		</if>
+		<include refid="where_Query_Condition" />
+		limit #{stratRow},#{pagesize}
+	</select>
+
+	<select id="getOrderListCount" parameterType="com.bilin.crm.vo.OrderCondition"
+		resultType="int">
+		select count(1)
+		from t_order
+		<include refid="where_Query_Condition" />
+		limit #{stratRow},#{pagesize}
 	</select>
 </mapper>

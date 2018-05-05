@@ -47,14 +47,18 @@
                 { name: 'remark',type:'string'},
                 { name: 'operate', type: 'string' }
             ], 
-            root:'result', 
-            pagenum: 0,                 
-            pagesize: 50,
-            data:{orderNo:$('#orderNoQuery').val()}, 
+            cache: false,
+            beforeprocessing: function(data) {
+                if (data != null) {
+                    source.totalrecords = data.totalRecords;
+                }
+            },
             pager: function (pagenum, pagesize, oldpagenum) { 
             	alert(pagenum);              
-            }, 
-            url: "order/getOrderList.do"
+            },  
+            url: "order/getOrderList.do",
+            data:{orderNo:$('#orderNoQuery').val()},
+            root:'result' 
         }; 
         var dataAdapter = new $.jqx.dataAdapter(source, {
             downloadComplete: function (data, status, xhr) { },
@@ -86,6 +90,10 @@
             sortable: true,
             editable: editable, 
             columnsresize: true,
+            virtualmode: true,
+            rendergridrows: function(obj) {
+                return obj.data;
+            },
             localization: getLocalization(),  
             pagesizeoptions:[50,100,200],  
             pagesize: 50,  

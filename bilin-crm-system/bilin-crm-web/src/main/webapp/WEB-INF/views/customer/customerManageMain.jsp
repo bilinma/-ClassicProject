@@ -31,18 +31,17 @@
                 { name: 'createTime',type:'date'},
                 { name: 'operate', type: 'string' }
             ], 
-            root:'result', 
-            data:{searchValue:searchValue},
             beforeprocessing: function(data) {
-               	debugger;
                 if (data != null) {
                     source.totalrecords = data.totalRecords;
                 }
             },
             pager: function (pagenum, pagesize, oldpagenum) { 
             	alert(pagenum);              
-            }, 
-            url: "customer/getCustomerList.do"
+            },
+            url: "customer/getCustomerList.do", 
+            data:{searchValue:searchValue},
+            root:'result' 
         }; 
         var dataAdapter = new $.jqx.dataAdapter(source, {
 			downloadComplete: function (data, status, xhr) {

@@ -11,4 +11,6 @@ public interface OrderMapper extends BaseMapper<Order>{
 
 	public List<Order> getOrderList(OrderCondition orderQuery);
 
+	public int getOrderListCount(OrderCondition orderCondition);
+
 }

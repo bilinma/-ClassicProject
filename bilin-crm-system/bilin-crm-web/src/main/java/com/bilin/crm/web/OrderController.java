@@ -41,15 +41,15 @@ public class OrderController {
 		model.addAttribute("customerList", dataList);
 		return "order/orderManageMain";
 	}
-
 	
-	
-	//前台做定义时 注意：把系统表放在最前面 序号为0 其它表序号从1开始
 	@RequestMapping(value = "/getOrderList") 
 	@ResponseBody
-	public Object getOrderList(OrderCondition orderQuery) throws Exception { 
-		Map<String,List<Order>> map = new HashMap<String, List<Order>>(); 
-		List<Order> dataList = orderService.getOrderList(orderQuery);
+	public Object getOrderList(OrderCondition orderCondition) throws Exception {
+		orderCondition.setStratRow();
+		List<Order> dataList = orderService.getOrderList(orderCondition);
+		int totalRecords = orderService.getOrderListCount(orderCondition);
+		Map<String,Object> map = new HashMap<String, Object>(); 
+		map.put("totalRecords", totalRecords);
 		map.put("result", dataList);
 		return map; 
 	}

@@ -15,4 +15,6 @@ public interface IOrderService {
 
 	public Integer getNextOrderSeq();
 
+	public int getOrderListCount(OrderCondition orderCondition);
+
 }

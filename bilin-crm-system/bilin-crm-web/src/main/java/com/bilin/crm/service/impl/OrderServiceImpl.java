@@ -36,6 +36,11 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	@Override
+	public int getOrderListCount(OrderCondition orderCondition) {
+		return orderMapper.getOrderListCount(orderCondition);
+	}
+	
+	@Override
 	public Integer getNextOrderSeq() {
 		return orderMapper.getNextOrderSeq();
 	}
