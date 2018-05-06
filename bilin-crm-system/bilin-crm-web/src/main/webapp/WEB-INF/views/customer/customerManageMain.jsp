@@ -29,7 +29,8 @@
                 { name: 'levelShow',value:'level',values: {source: custLevelAdapter.records, value: 'value', name: 'label'}},
                 { name: 'amountTotal',type:'string'},
                 { name: 'createTime',type:'date'},
-                { name: 'operate', type: 'string' }
+                { name: 'editOperate', type: 'string' },
+                { name: 'detelteOperate', type: 'string' }
             ], 
             beforeprocessing: function(data) {
                 if (data != null) {
@@ -76,7 +77,31 @@
         $("#jqxgrid").jqxGrid({
         	width:'99%',  
         	height:height-60,  
-            source: dataAdapter,                 
+            source: dataAdapter,
+            showtoolbar: true,
+            rendertoolbar: function (statusbar) {
+                // appends buttons to the status bar.
+                var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+                var addButton = $('<input type="button" id="addCustomerBtn" value="新增">');
+                var excelExportButton = $('<input type="button" id="excelExportBtn" value="导出">');
+                container.append(addButton);
+                container.append(excelExportButton);
+                statusbar.append(container);
+                addButton.jqxButton({  width: 80, height: 20 });
+                excelExportButton.jqxButton({  width: 80, height: 20 });
+                addButton.click(function (event) {
+                	$("#code").val('');
+        	    	$("#name").val('');
+        	    	$("#telephone").val('');
+        	    	$("#wechat").val('');
+        	    	$('#remark').val('');
+        	    	$('#birthday').jqxDateTimeInput('setDate','');
+                	$('#saveCustomerWin').jqxWindow('open');  
+                });
+                excelExportButton.click(function(event){
+                	$("#jqxgrid").jqxGrid('exportdata', 'xls', '顾客信息');     
+                }); 
+            },
             pageable: true,    
             sortable: true,
             editable: editable, 
@@ -91,22 +116,50 @@
             columns: [ 
               {text: '选择',  datafield: 'check',columntype:'checkbox',align: 'center',width: 60 },                       
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'left', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
-              {text: '顾客编码',  datafield: 'code', align: 'center', cellsalign: 'left', width: 100,editable:true,cellsrenderer:cellsrenderer}, 
-              {text: '顾客姓名',  datafield: 'name', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer}, 
-              {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'left', width: 200,editable:true,cellsrenderer:cellsrenderer},
-              {text: '微信',  datafield: 'wechat', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsrenderer:cellsrenderer},
-              {text: '生日',  datafield: 'birthday', align: 'center', cellsalign: 'left', width: 150,editable:false,cellsformat: 'yyyy-MM-dd',cellsrenderer:cellsrenderer},
+              {text: '顾客编码',  datafield: 'code', align: 'center', cellsalign: 'center', width: 100,editable:true,cellsrenderer:cellsrenderer}, 
+              {text: '顾客姓名',  datafield: 'name', align: 'center', cellsalign: 'center', width: 150,editable:true,cellsrenderer:cellsrenderer}, 
+              {text: '电话',  datafield: 'telephone', align: 'center', cellsalign: 'center', width: 200,editable:true,cellsrenderer:cellsrenderer},
+              {text: '微信',  datafield: 'wechat', align: 'center', cellsalign: 'center', width: 150,editable:false,cellsrenderer:cellsrenderer},
+              {text: '生日',  datafield: 'birthday', align: 'center', cellsalign: 'center', width: 150,editable:false,cellsformat: 'yyyy-MM-dd',cellsrenderer:cellsrenderer},
               {text: '顾客等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
-              {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'left', width: 100,editable:false,cellsrenderer:cellsrenderer},
-              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
-              {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
+              {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'right', width: 100,editable:false,cellsrenderer:cellsrenderer},
+              {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'center', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
+              {text: '编辑',  datafield: 'editOperate', columngroup: 'operate',columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
-            		  console.log(defaultHtml);
+            		  return "编辑";  
+                  },
+            	  buttonclick:function(row,owner){
+                		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+                		var name = dataRecord.name;
+                		var id = dataRecord.id;
+                		$.ajax({
+   	   	                 contentType: "application/json",   
+   	   	                 url: "customer/getCustomerById.do",
+   	   	                 dataType: "json", 
+   	   	                 data: {id:id},
+   	   	                 success: function(data){
+   	   	                	if(data){
+   	   	                		$("#id").val(data.id);
+		   	   	               	$("#code").val(data.code);
+			           	    	$("#name").val(data.name);
+			           	    	$("#telephone").val(data.telephone);
+			           	    	$("#wechat").val(data.wechat);
+			           	    	$('#birthday').jqxDateTimeInput('setDate',new Date(data.birthday));
+			           	    	$('#remark').val(data.remark);
+	   	   	                	$('#saveCustomerWin').jqxWindow('open'); 
+   	   	                	}else{
+								alert("找不到该顾客信息，请联系管理员！");   	   	                		
+   	   	                	}
+   	   	                 }
+   	   				}); 
+                  }
+              },
+              {text: '删除',  datafield: 'deleteOperate', columngroup: 'operate',columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
+            	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
             		  return "删除";  
                   },
             	  buttonclick:function(row,owner){
                 		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
-                		console.log(dataRecord);
                 		var name = dataRecord.name;
                 		var id = dataRecord.id;
                 		if (window.confirm("该顾客[" + name + "]将从列表中移除，请确认！")) {
@@ -131,6 +184,9 @@
                         }
                   }
               } 
+            ],
+            columngroups: [
+                { text: '操作', align: 'center', name: 'operate' }
             ]
         });
     	
@@ -149,16 +205,7 @@
 	    }
 	    $('#queryBtn').on('click',queryCustomerList);
       
-        $("#addCustomerBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
-        $("#addCustomerBtn").on("click",function(){
-        	$("#code").val('');
-	    	$("#name").val('');
-	    	$("#telephone").val('');
-	    	$("#wechat").val('');
-	    	$('#remark').val('');
-        	$('#addCustomerWin').jqxWindow('open'); 
-        });
-		$("#addCustomerWin").jqxWindow({ 
+		$("#saveCustomerWin").jqxWindow({ 
 			title: "添加顾客信息", 
 			isModal: true,
 			autoOpen:false,
@@ -170,9 +217,10 @@
 			height: 500,
 			width: 1000,
 		});
-		$("#birthday").jqxDateTimeInput({ width: '250px', height: '23px' });
-		$("#confirmBtn").jqxButton({width: '100',height:'23'});
-		$('#confirmBtn').on('click',function(){
+		$("#birthday").jqxDateTimeInput({ min: new Date(1900, 1, 1), max: new Date(),width: '200px', height: '23px',formatString: 'yyyy-MM-dd'});
+		$("#levelSelect").jqxDropDownList({source: custLevelAdapter, selectedIndex: 1, width: '200', height: '23'});
+		$("#saveConfirmBtn").jqxButton({width: '100',height:'23'});
+		$('#saveConfirmBtn').on('click',function(){
 			var code = $("#code").val();
 			if (!code) {
 				alert("顾客编码不能为空！")
@@ -187,16 +235,19 @@
             if(!validateUtil.checkMobile(telephone)){
         	  return; 
             }
+            var levelSelectItem = $("#levelSelect").jqxDropDownList('getSelectedItem');
 	        $.ajax({
                 contentType: "application/json; charset=utf-8",
                 url: "customer/saveCustomerData.do",
                 data: {
+                	id:$("#id").val(),
                 	code:code,
                 	name:name,
                 	telephone:telephone,
                 	birthday:$('#birthday').jqxDateTimeInput('getDate'),
                 	wechat:$("#wechat").val(),
-                	remark:$("#remark").val(),
+                	level:levelSelectItem.value,
+                	remark:$("#remark").val()
                 },    
                 dataType: "json", 
                 success: function(data){ 
@@ -210,10 +261,8 @@
                 }
             });
 			queryCustomerList();
-	    	$('#addCustomerWin').jqxWindow('close');
+	    	$('#saveCustomerWin').jqxWindow('close');
 	    });
-		
-		
 		$("#cancelBtn").jqxButton({width: '100',height:'23'});
 	    $('#cancelBtn').on('click',function(){
 	    	$("#code").val('');
@@ -221,10 +270,8 @@
 	    	$("#telephone").val('');
 	    	$("#wechat").val('');
 	    	$('#remark').val('');
-	    	$('#addCustomerWin').jqxWindow('close');
+	    	$('#saveCustomerWin').jqxWindow('close');
 	    });
-        
-        $("#modifyCustomerBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
     });
 	</script>
   </head>
@@ -235,8 +282,6 @@
 			<input type="text" id="searchValue" /> <input type="button" id="queryBtn" value="查询">
 		</div>
 		<div id="operateBtn">
-			<input type="button" id="addCustomerBtn" value="新增"> 
-			<input type="button" id="modifyCustomerBtn" value="修改">
 		</div>
 	</div>
 
@@ -246,10 +291,11 @@
 		</div>
 	</div>
 
-	<div id="addCustomerWin" style="display: none;">
+	<div id="saveCustomerWin" style="display: none;">
 		<div>
 			<div id="addCustomerTable">
 				<table class="register-table">
+					<input type="text" id="id" class="text-input" style="display:none;"/>
 					<tr>
 						<td>顾客编码:</td>
 						<td><input type="text" id="code" class="text-input" maxlength="5"/><font color=red>*</font></td>
@@ -271,12 +317,16 @@
 						<td><input type="text" id="wechat" class="text-input" maxlength="10"/></td>
 					</tr>
 					<tr>
+						<td>微信:</td>
+						<td><div id='levelSelect'></div></td>
+					</tr>
+					<tr>
 						<td>备注:</td>
 						<td><textarea id="remark" cols=60 rows=15 maxlength="200" style="overflow:auto"></textarea></td>
 					</tr>
 					<tr>
 						<td height=30 colspan="4" align="center">
-							<input type="button" id="confirmBtn" value="确定" style="margin-right: 10px" /> 
+							<input type="button" id="saveConfirmBtn" value="确定" style="margin-right: 10px" /> 
 							<input type="button" id="cancelBtn" value="取消" />
 						</td>
 					</tr>					

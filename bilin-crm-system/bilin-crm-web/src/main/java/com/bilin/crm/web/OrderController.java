@@ -1,6 +1,5 @@
 package com.bilin.crm.web;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +58,6 @@ public class OrderController {
 	public Map<String, Object> saveOrderData(Order order) {
 		Map<String, Object> retMap = new HashMap<String, Object>();
 		try{
-			order.setCreateTime(new Date());
-			order.setOrderStatus(1);
-			order.setBackStatus(1);
 			orderService.saveOrder(order);
 			retMap.put("successFlag", true);
 			retMap.put("retMsg", "保存成功！");

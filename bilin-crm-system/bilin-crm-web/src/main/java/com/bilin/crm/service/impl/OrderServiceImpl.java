@@ -1,5 +1,6 @@
 package com.bilin.crm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +27,40 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(readOnly = false,rollbackFor=Exception.class)
 	public void deleteOrder(Long id) {
+		Order order = orderMapper.selectByPrimaryKey(id);
+		Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
+		customer.setAmountTotal(customer.getAmountTotal()-order.getAmount());
+		customerMapper.updateByPrimaryKey(customer);
 		orderMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
 	@Transactional(readOnly = false,rollbackFor=Exception.class)
 	public void saveOrder(Order order) {
-		orderMapper.insert(order);
-		Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
-		Integer amountTotal = customer.getAmountTotal();
-		amountTotal =  amountTotal + order.getAmount();
-		customer.setAmountTotal(amountTotal);
-		customerMapper.updateByPrimaryKey(customer);
-		
-		int orderCount = orderMapper.selectCount(null);
-		if(orderCount%31==0){
-			orderMapper.updateMinUnBackOrder();
+		Long orderId = order.getId();
+		Order orderDB = null;
+		if(orderId!=null&&orderId!=0){
+			orderDB = orderMapper.selectByPrimaryKey(orderId);
 		}
+		if(orderDB!=null){
+			order.setCreateTime(order.getCreateTime());
+			orderMapper.updateByPrimaryKeySelective(order);
+		}else{
+			order.setCreateTime(new Date());
+			order.setBackStatus(1);
+			orderMapper.insert(order);
+			Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
+			Integer amountTotal = customer.getAmountTotal();
+			amountTotal =  amountTotal + order.getAmount();
+			customer.setAmountTotal(amountTotal);
+			customerMapper.updateByPrimaryKey(customer);
+			
+			int orderCount = orderMapper.selectCount(null);
+			if(orderCount%31==0){
+				orderMapper.updateMinUnBackOrder();
+			}
+		}
+		
 	}
 
 	@Override

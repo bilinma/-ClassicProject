@@ -11,6 +11,8 @@ function regNameSpace(namespace) {
 
 regNameSpace("validateUtil");
 
+
+
 validateUtil = {
 	checkUserName:function(tab,userName) {
 		var temp = false;
