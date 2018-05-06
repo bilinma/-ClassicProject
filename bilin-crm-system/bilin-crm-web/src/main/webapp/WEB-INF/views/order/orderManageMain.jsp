@@ -143,6 +143,34 @@
         	    	$("#orderStatusSelect").jqxDropDownList('selectIndex', 0);
                 	$('#saveOrderWin').jqxWindow('open'); 
                 });
+                backMoneyButton.click(function (event) {
+                	var rows = $('#jqxgrid').jqxGrid('getrows');
+            		var selectKeyColums = new Array();
+            		for(var i=0;i<rows.length;i++){
+            			if(rows[i].check==1){ 
+            				selectKeyColums.push(rows[i].id); 
+            			}
+            		}
+            		if(selectKeyColums.length==1){
+            	     	$.ajax({
+            	               url: "order/confirmBackMoney.do", 
+            	               data: {id:selectKeyColums[0]},     
+            	               dataType: "json", 
+            	               success: function(data){ 
+            					if(data.successFlag){
+            						alert(data.retMsg);
+            						queryOrderList(); 
+            					}else{
+            						alert(data.retMsg);
+            					}
+            	              }
+            	         });
+            		}else if(selectKeyColums.length>1){
+            			alert('请勾选一条需要确认的记录！');
+            		}else{
+            			alert('请勾选需要确认的记录！');
+            		}
+                });
                 excelExportButton.click(function(event){
                 	$("#jqxgrid").jqxGrid('exportdata', 'xls', '订单列表');     
                 }); 

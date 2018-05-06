@@ -83,4 +83,19 @@ public class OrderServiceImpl implements IOrderService {
 		return orderMapper.getOrderByOrderNo(orderNo);
 	}
 
+	@Override
+	@Transactional(readOnly = false,rollbackFor=Exception.class)
+	public String confirmBackMoney(Long id) {
+		String retMsg = "返款成功！";
+		Order order = orderMapper.selectByPrimaryKey(id);
+		if(order.getBackStatus().intValue()==2&&order.getBackStatus()==2){
+			order.setBackStatus(3);
+			orderMapper.updateByPrimaryKeySelective(order);
+		}else{
+			retMsg = "订单未支付或者没到待返款状态！";
+		}
+		return retMsg;
+		
+	}
+
 }

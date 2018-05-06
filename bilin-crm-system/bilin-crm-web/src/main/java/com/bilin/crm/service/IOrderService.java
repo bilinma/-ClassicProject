@@ -19,4 +19,6 @@ public interface IOrderService {
 
 	public Order getOrderByOrderNo(String orderNo);
 
+	public String confirmBackMoney(Long id);
+
 }

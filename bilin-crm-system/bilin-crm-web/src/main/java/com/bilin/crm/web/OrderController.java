@@ -70,6 +70,25 @@ public class OrderController {
 		return retMap;
 	}
 	
+	@RequestMapping(value = "/confirmBackMoney") 
+	@ResponseBody
+	public Map<String, Object> confirmBackMoney(Long id) {
+		Map<String, Object> retMap = new HashMap<String, Object>();
+		try{
+			String msg = orderService.confirmBackMoney(id);
+			retMap.put("successFlag", true);
+			retMap.put("retMsg", msg);
+		}catch(Exception e){
+			e.printStackTrace();
+			retMap.put("successFlag", false);
+			retMap.put("retMsg", "处理异常："+e.getMessage());
+			return retMap;
+		}
+		return retMap;
+	}
+	
+	
+	
 	@RequestMapping(value = "/deleteOrder") 
 	@ResponseBody
 	public String deleteOrder(@RequestParam(value = "id", required=true)Long id) {
