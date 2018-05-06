@@ -18,7 +18,7 @@ public class PinYinConvertJPUtil {
 		String tempStr = null;
 
 		try {
-			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, " ", PinyinFormat.WITH_TONE_MARK);
+			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, null, PinyinFormat.WITH_TONE_MARK);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class PinYinConvertJPUtil {
 		String tempStr = null;
 
 		try {
-			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, " ", PinyinFormat.WITH_TONE_NUMBER);
+			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, null, PinyinFormat.WITH_TONE_NUMBER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,7 +60,7 @@ public class PinYinConvertJPUtil {
 		String tempStr = null;
 
 		try {
-			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, " ", PinyinFormat.WITHOUT_TONE);
+			tempStr = PinyinHelper.convertToPinyinString(pinYinStr, null, PinyinFormat.WITHOUT_TONE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

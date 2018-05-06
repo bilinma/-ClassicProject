@@ -57,7 +57,10 @@
             	alert(pagenum);              
             },  
             url: "order/getOrderList.do",
-            data:{orderNo:$('#orderNoQuery').val()},
+            data:{
+            	orderNo:$('#orderNoQuery').val(),
+            	custSearchValue:$('#custSearchValue').val()
+            },
             root:'result' 
         }; 
         var dataAdapter = new $.jqx.dataAdapter(source, {
@@ -104,7 +107,46 @@
         $("#jqxgrid").jqxGrid({
         	width:'99%',  
         	height:height-60,  
-            source: dataAdapter,                 
+            source: dataAdapter, 
+            showtoolbar: true,
+            rendertoolbar: function (statusbar) {
+                // appends buttons to the status bar.
+                var container = $("<div style='overflow: hidden; position: relative; margin: 5px;'></div>");
+                var addButton = $('<input type="button" id="addOrderBtn" value="新增">');
+                var backMoneyButton = $('<input type="button" id="backConfirmBtn" value="确认返款">');
+                var excelExportButton = $('<input type="button" id="excelExportBtn" value="导出">');
+                container.append(addButton);
+                container.append(backMoneyButton);
+                container.append(excelExportButton);
+                statusbar.append(container);
+                addButton.jqxButton({  width: 80, height: 20 });
+                backMoneyButton.jqxButton({  width: 120, height: 20 });
+                excelExportButton.jqxButton({  width: 80, height: 20 });
+                addButton.click(function (event) {
+                	$("#id").val('');
+                	var orderNo = $.ajax({
+               			url : "order/getOrderNo.do", 
+               			async : false,
+               			datatype: "json",
+               		}).responseText
+               		$("#orderNo").val(orderNo);
+                	var orderSeq = $.ajax({
+               			url : "order/getNextOrderSeq.do", 
+               			async : false,
+               			datatype: "json",
+               		}).responseText
+               		$("#orderSeq").val(orderSeq);
+                	$("#amount").val(0);
+        	    	$("#deskNo").val('');
+        	    	$('#remark').val('');
+        	    	$("#customerSelect").jqxDropDownList('clearSelection');
+        	    	$("#orderStatusSelect").jqxDropDownList('selectIndex', 0);
+                	$('#saveOrderWin').jqxWindow('open'); 
+                });
+                excelExportButton.click(function(event){
+                	$("#jqxgrid").jqxGrid('exportdata', 'xls', '订单列表');     
+                }); 
+            },            
             pageable: true,    
             sortable: true,
             editable: editable, 
@@ -119,8 +161,14 @@
             columns: [ 
               {text: '选择', datafield: 'check',columntype:'checkbox',align: 'center',width: 60 },                     
               {text: 'ID',  datafield: 'id', align: 'center', cellsalign: 'center', width: 50,editable:false,hidden:true,cellsrenderer:cellsrenderer},
-              {text: '订单序号',  datafield: 'orderSeq', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer}, 
-              {text: '订单编号',  datafield: 'orderNo', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer}, 
+              {text: '订单序号',  datafield: 'orderSeq', align: 'center', cellsalign: 'right', width: 80,editable:false,cellsrenderer:cellsrenderer}, 
+              {text: '订单编号',  datafield: 'orderNo', align: 'center', cellsalign: 'center', width: 200,editable:false,
+            	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
+						var element = $(defaultHtml);
+						element.attr("href","javascript:void(0)");
+						return element[0].outerHTML;
+            	  }
+              }, 
               {text: '顾客',  datafield: 'customerId',displayfield: 'customerShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '桌号',  datafield: 'deskNo', align: 'center', cellsalign: 'left', width: 80,editable:false,cellsrenderer:cellsrenderer},
               {text: '消费金额',  datafield: 'amount', align: 'center', cellsalign: 'right', width: 100,editable:false,cellsrenderer:cellsrenderer},
@@ -130,7 +178,6 @@
               {text: '订单备注',  datafield: 'remark', align: 'center', cellsalign: 'left', width: 200,editable:false,cellsrenderer:cellsrenderer},
               {text: '操作',  datafield: 'operate', columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
-            		  console.log(defaultHtml);
             		  return "删除";  
                   },
             	  buttonclick:function(row,owner){
@@ -163,11 +210,8 @@
             ]
         });
         $("#jqxgrid").on("cellclick", function (event){
-    		    // event arguments.
     		    var args = event.args;
-    		    // column data field.
     		    var dataField = args.datafield;
-    		    // cell value
     		    var value = args.value;
     		    if(dataField=="orderNo"){
     				$.ajax({
@@ -176,63 +220,36 @@
     	                 dataType: "json", 
     	                 data: {orderNo:value},
     	                 success: function(data){
-    	                	$("#m_orderNo").val(data.orderNo);
-    	                	$("#m_orderSeq").val(data.orderSeq);
-    	                 	$("#m_amount").val(data.amount);
-    	         	    	$("#m_deskNo").val(data.deskNo);
-    	         	    	$('#m_remark').val(data.remark);
-    	                	$('#modifyOrderWin').jqxWindow('open'); 
+    	                	$("#id").val(data.id);
+    	                	$("#orderNo").val(data.orderNo);
+    	                	$("#orderSeq").val(data.orderSeq);
+    	                 	$("#amount").val(data.amount);
+    	         	    	$("#deskNo").val(data.deskNo);
+   	         	    		$("#customerSelect").jqxDropDownList('val', data.customerId);
+    	         	    	$("#orderStatusSelect").jqxDropDownList('val', data.orderStatus);
+    	         	    	$('#remark').val(data.remark);
+    	                	$('#saveOrderWin').jqxWindow('open');
     	                 }
     				});    	                 
     		    }
      	});
         
-		$("#modifyOrderWin").jqxWindow({ 
-			title: "创建订单", 
-			isModal: true,
-			autoOpen:false,
-			showCollapseButton: true,
-			maxHeight: 600, 
-			maxWidth: 700, 
-			minHeight: 200, 
-			minWidth: 400,
-			height: 500,
-			width: 1000,
-		});
-        
-        
+	    $("#custSearchValue").jqxInput({placeHolder: "顾客姓名/手机", height: 20, width: 200, minLength: 1});
 	    $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
-        
+	    
         $("#queryBtn").jqxButton({width: '100',height:'23'});
         function queryOrderList(){
 	    	var orderNo = $('#orderNoQuery').val();
+	    	var custSearchValue=$('#custSearchValue').val();
 		    dataAdapter._source.data={ 
-		    	orderNo:orderNo,  
+		    	orderNo:orderNo,
+		    	custSearchValue:custSearchValue
 		    } 
 		    $("#jqxgrid").jqxGrid({ source: dataAdapter });
 	    }
 	    $('#queryBtn').on('click',queryOrderList);
       
-        $("#addOrderBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
-        $("#addOrderBtn").on("click",function(){
-        	var orderNo = $.ajax({
-       			url : "order/getOrderNo.do", 
-       			async : false,
-       			datatype: "json",
-       		}).responseText
-       		$("#orderNo").val(orderNo);
-        	var orderSeq = $.ajax({
-       			url : "order/getNextOrderSeq.do", 
-       			async : false,
-       			datatype: "json",
-       		}).responseText
-       		$("#orderSeq").val(orderSeq);
-        	$("#amount").val(0);
-	    	$("#deskNo").val('');
-	    	$('#remark').val('');
-        	$('#addOrderWin').jqxWindow('open'); 
-        });
-		$("#addOrderWin").jqxWindow({ 
+		$("#saveOrderWin").jqxWindow({ 
 			title: "创建订单", 
 			isModal: true,
 			autoOpen:false,
@@ -244,22 +261,30 @@
 			height: 500,
 			width: 1000,
 		});
-		$("#confirmBtn").jqxButton({width: '100',height:'23'});
-		$('#confirmBtn').on('click',function(){
-			var customerId = $('#customerIdSelect option:selected').val();
+		
+		$("#customerSelect").jqxDropDownList({source: customerAdapter, width: '200', height: '23'});
+		$("#orderStatusSelect").jqxDropDownList({source: orderStatusAdapter, selectedIndex: 0, width: '200', height: '23'});
+		$("#saveConfirmBtn").jqxButton({width: '100',height:'23'});
+		$('#saveConfirmBtn').on('click',function(){
+			//var customerId = $('#customerIdSelect option:selected').val();
+			var customerSelectItem = $("#customerSelect").jqxDropDownList('getSelectedItem');
+			var customerId = customerSelectItem.value;
 			if (!customerId||customerId=='-1') {
 				alert("顾客不能为空！")
 				return ;
 			}
+			var orderStatusItem = $("#orderStatusSelect").jqxDropDownList('getSelectedItem'); 
 	        $.ajax({
                 contentType: "application/json",   
                 url: "order/saveOrderData.do",
                 data: {
+                	id:$("#id").val(),
                 	orderNo:$("#orderNo").val(),
                 	orderSeq:$("#orderSeq").val(),
                 	customerId:customerId,
                 	deskNo:$("#deskNo").val(),
                 	amount:$("#amount").val(),
+                	orderStatus:orderStatusItem.value,
                 	remark:$("#remark").val(),
                 },    
                 dataType: "json", 
@@ -274,44 +299,44 @@
                 }
             });
 			queryOrderList();
-	    	$('#addOrderWin').jqxWindow('close');
+	    	$('#saveOrderWin').jqxWindow('close');
 	    });
 		
 		
 		$("#cancelBtn").jqxButton({width: '100',height:'23'});
 	    $('#cancelBtn').on('click',function(){
-	    	$('#customerIdSelect option:selected').val('-1')
+	    	$("#id").val('');
+	    	//$('#customerIdSelect option:selected').val('-1');
+	    	$("#customerSelect").jqxDropDownList('clearSelection');
 	    	$("#deskNo").val('');
 	    	$("#amount").val(''),
 	    	$('#remark').val('');
-	    	$('#addOrderWin').jqxWindow('close');
+	    	$("#orderStatusSelect").jqxDropDownList('selectIndex', 0);
+	    	$('#saveOrderWin').jqxWindow('close');
 	    });
-        
-        $("#modifyOrderBtn").jqxButton({width: '100',height:'23',disabled: !editable}); 
     });
 	</script>
   </head>
   
-<body id="customerMainBody">
+<body id="orderMainBody">
 	<div align="left">
 		<div style="width: 600px; padding-left: 100px; float: left;">
-			<input type="text" id="orderNoQuery" /><input type="text" id="orderStatusQuery" /> <input type="button" id="queryBtn" value="查询">
+			<input type="text" id="custSearchValue" /> 
+			<input type="text" id="orderNoQuery" />
+			<input type="button" id="queryBtn" value="查询">
 		</div>
 	</div>
-	<div id="operateBtn">
-		<input type="button" id="addOrderBtn" value="新增">
-	</div>
 
-	<div id='jqxWidget' align="center"
-		style="margin-top: 10px; font-size: 13px; font-family: Verdana; float: center; width: 100%;">
+	<div id='jqxWidget' align="center" style="margin-top: 20px; font-size: 13px; font-family: Verdana; float: center; width: 100%;">
 		<div id="jqxgrid" align="center" style="width: 100%; height: 100%">
 		</div>
 	</div>
 
-	<div id="addOrderWin" style="display: none;">
+	<div id="saveOrderWin" style="display: none;">
 		<div>
-			<div id="addOrderTable">
+			<div id="saveOrderTable">
 				<table class="register-table">
+					<input type="text" id="id" class="text-input" style="display:none;"/>
 					<tr>
 						<td width="10%">订单编码:</td>
 						<td><input type="text" id="orderNo" class="text-input" readonly="readonly"/><font color=red>*</font></td>
@@ -323,15 +348,15 @@
 					<tr>
 						<td width="10%" class="td1" >顾客：</td>
 						<td align="left" >
-							<select id="customerIdSelect" style="WIDTH:170px">
+							<%-- <select id="customerIdSelect" style="WIDTH:200px">
 								<option value="-1">
 									--请选择--
 								</option>
 								<c:forEach items="${customerList}" var="customer" varStatus="status">
 									<option value="${customer.id}">${customer.name}</option>
 								</c:forEach>
-							</select>
-							<font color=red>*</font>
+							</select> --%>
+							<div id='customerSelect'><font color=red>*</font></div>
 						</td>
 					</tr>
 					<tr>
@@ -341,6 +366,10 @@
 					<tr>
 						<td width="10%">消费金额:</td>
 						<td><input type="text" id="amount" class="text-input" maxlength="5" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
+					</tr>
+					<tr>
+						<td width="10%">订单状态:</td>
+						<td><div id='orderStatusSelect'></div></td>
 					</tr>					
 					<tr>
 						<td width="10%">备注:</td>
@@ -348,7 +377,7 @@
 					</tr>
 					<tr>
 						<td height=30 colspan="4" align="center">
-							<input type="button" id="confirmBtn" value="确定" style="margin-right: 10px" /> 
+							<input type="button" id="saveConfirmBtn" value="确定" style="margin-right: 10px" /> 
 							<input type="button" id="cancelBtn" value="取消" />
 						</td>
 					</tr>					
@@ -357,61 +386,4 @@
 		</div>
 	</div>
 	
-	<div id="modifyOrderWin" style="display: none;">
-		<div>
-			<div id="modifyOrderTable">
-				<table class="register-table">
-					<tr>
-						<td width="10%">订单编码:</td>
-						<td><input type="text" id="m_orderNo" class="text-input" readonly="readonly"/><font color=red>*</font></td>
-					</tr>
-					<tr>
-						<td width="10%">订单序号:</td>
-						<td><input type="text" id="m_orderSeq" class="text-input" readonly="readonly"/><font color=red>*</font></td>
-					</tr>
-					<tr>
-						<td width="10%" class="td1" >顾客：</td>
-						<td align="left" >
-							<select id="m_customerIdSelect" style="WIDTH:170px">
-								<c:forEach items="${customerList}" var="customer" varStatus="status">
-									<option value="${customer.id}">${customer.name}</option>
-								</c:forEach>
-							</select>
-							<font color=red>*</font>
-						</td>
-					</tr>
-					<tr>
-						<td width="10%">桌号:</td>
-						<td><input type="text" id="m_deskNo" class="text-input" maxlength="5"/></td>
-					</tr>
-					<tr>
-						<td width="10%">消费金额:</td>
-						<td><input type="text" id="m_amount" class="text-input" maxlength="5" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/></td>
-					</tr>
-					<tr>
-						<td width="10%" class="td1" >订单状态：</td>
-						<td align="left" >
-							<div id='m_orderStatusSelect'></div>
-						</td>
-					</tr>
-					<tr>
-						<td width="10%" class="td1" >返款状态：</td>
-						<td align="left" >
-							<div id='m_backStatusSelect'></div>
-						</td>
-					</tr>
-					<tr>
-						<td width="10%">备注:</td>
-						<td><textarea id="m_remark" cols=60 rows=15 maxlength="200" style="overflow:auto"></textarea></td>
-					</tr>
-					<tr>
-						<td height=30 colspan="4" align="center">
-							<input type="button" id="modifyOrderBtn" value="修改保存" style="margin-right: 10px" />
-							<input type="button" id="modifycancelBtn" value="取消" />
-						</td>
-					</tr>					
-				</table>
-			</div> 
-		</div>
-	</div>	
 </body>

@@ -16,5 +16,6 @@
     <include refid="Base_Column_List" />
     from t_dictionary
     where group_type = #{groupType}
+    order by code
   </select>
 </mapper>

@@ -8,6 +8,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/bilin-crm-web/target/classes"/>
-        <property name="context-root" value="crm"/>
+        <property name="context-root" value="bilin-crm-web"/>
     </wb-module>
 </project-modules>

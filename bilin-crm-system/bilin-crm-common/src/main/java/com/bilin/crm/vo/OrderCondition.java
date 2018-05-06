@@ -28,7 +28,7 @@ public class OrderCondition extends PageRequest{
     /**
      * 顾客ID
      */
-    private Long customerId;
+    private String custSearchValue;
 
     /**
      * 桌号
@@ -85,15 +85,16 @@ public class OrderCondition extends PageRequest{
         this.orderSeq = orderSeq;
     }
 
-    public Long getCustomerId() {
-        return customerId;
-    }
+    
+    public String getCustSearchValue() {
+		return custSearchValue;
+	}
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustSearchValue(String custSearchValue) {
+		this.custSearchValue = custSearchValue;
+	}
 
-    public String getDeskNo() {
+	public String getDeskNo() {
         return deskNo;
     }
 

@@ -33,8 +33,10 @@
 			<if test="orderSeq != null and orderSeq != ''">
 				and order_seq = #{orderSeq,jdbcType=INTEGER}
 			</if>
-			<if test="customerId != null and customerId!=''">
-				and customerId = #{customerId,jdbcType=BIGINT}
+			<if test="custSearchValue != null and custSearchValue != ''">
+				and customer_id in (SELECT id FROM t_customer
+					WHERE (NAME LIKE CONCAT('%', #{custSearchValue},'%') or telephone like CONCAT('%', #{custSearchValue},'%'))
+				)
 			</if>
 			<if test="deskNo != null">
 				and deskNo = #{deskNo,jdbcType=VARCHAR}

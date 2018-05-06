@@ -17,4 +17,6 @@ public interface ICustomerService {
 
 	public List<Customer> getCustomerSelectList();
 
+	public Customer getCustomerById(Long id);
+
 }

@@ -1,5 +1,6 @@
 package com.bilin.crm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bilin.crm.dao.CustomerMapper;
 import com.bilin.crm.domain.Customer;
 import com.bilin.crm.service.ICustomerService;
+import com.bilin.crm.utils.PinYinConvertJPUtil;
 import com.bilin.crm.vo.CustomerCondition;
 
 @Service
@@ -32,7 +34,19 @@ public class CustomerServiceImpl implements ICustomerService {
 	@Override
 	@Transactional(readOnly = false,rollbackFor=Exception.class)
 	public int saveCustomer(Customer customer) {
-		return customerMapper.insert(customer);
+		Long custId = customer.getId();
+		Customer  customerDB = null;
+		if(custId!=null){
+			customerDB = customerMapper.selectByPrimaryKey(custId);
+		}
+		if(customerDB!=null){
+			return customerMapper.updateByPrimaryKeySelective(customer);
+		}else{
+			customer.setCreateTime(new Date());
+			customer.setAmountTotal(0);
+			customer.setPinyinName(PinYinConvertJPUtil.changeToTonePinYin(customer.getName()));
+			return customerMapper.insert(customer);
+		}
 	}
 
 	@Override
@@ -44,6 +58,11 @@ public class CustomerServiceImpl implements ICustomerService {
 	@Override
 	public List<Customer> getCustomerSelectList() {
 		return customerMapper.getCustomerSelectList();
+	}
+
+	@Override
+	public Customer getCustomerById(Long id) {
+		return customerMapper.selectByPrimaryKey(id);
 	}
 
 }

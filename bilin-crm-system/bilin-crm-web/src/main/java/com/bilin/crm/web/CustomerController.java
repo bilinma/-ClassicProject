@@ -1,7 +1,6 @@
 package com.bilin.crm.web;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import com.bilin.crm.common.UserUtils;
 import com.bilin.crm.domain.Customer;
 import com.bilin.crm.domain.User;
 import com.bilin.crm.service.ICustomerService;
-import com.bilin.crm.utils.PinYinConvertJPUtil;
 import com.bilin.crm.vo.CustomerCondition;
 
 @Controller
@@ -55,12 +53,6 @@ public class CustomerController {
 	public Map<String, Object> saveCustomerData(Customer customer) {
 		Map<String, Object> retMap = new HashMap<String, Object>();
 		try{
-			//JSONObject jsonObject = JSONObject.fromObject(rowDataRecord); 
-			//Map<String, Object> objMap = (Map<String, Object>)JSONObject.toBean(jsonObject, Map.class);
-			customer.setCreateTime(new Date());
-			customer.setLevel(1);
-			customer.setAmountTotal(0);
-			customer.setPinyinName(PinYinConvertJPUtil.changeToTonePinYin(customer.getName()));
 			int retMsg = customerService.saveCustomer(customer);
 			retMap.put("successFlag", true);
 			retMap.put("retMsg", retMsg);
@@ -99,5 +91,13 @@ public class CustomerController {
 		}
 		return retlist;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getCustomerById")
+	public Customer getCustomerById(Long id){
+		Customer customer = customerService.getCustomerById(id);
+		return customer;
+	}
+	
 	
 }
