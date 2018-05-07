@@ -87,8 +87,8 @@
                 container.append(addButton);
                 container.append(excelExportButton);
                 statusbar.append(container);
-                addButton.jqxButton({  width: 80, height: 20 });
-                excelExportButton.jqxButton({  width: 80, height: 20 });
+                addButton.jqxButton({  width: 80, height: 25 });
+                excelExportButton.jqxButton({  width: 80, height: 25 });
                 addButton.click(function (event) {
                 	$("#code").val('');
         	    	$("#name").val('');
@@ -217,6 +217,11 @@
 			height: 500,
 			width: 1000,
 		});
+		
+		$("#code").jqxInput({height: 23, width: 200, minLength: 1});
+		$("#name").jqxInput({height: 23, width: 200, minLength: 1});
+		$("#telephone").jqxInput({height: 23, width: 200});
+		$("#wechat").jqxInput({height: 23, width: 200});
 		$("#birthday").jqxDateTimeInput({ min: new Date(1900, 1, 1), max: new Date(),width: '200px', height: '23px',formatString: 'yyyy-MM-dd'});
 		$("#levelSelect").jqxDropDownList({source: custLevelAdapter, selectedIndex: 1, width: '200', height: '23'});
 		$("#saveConfirmBtn").jqxButton({width: '100',height:'23'});

@@ -119,9 +119,9 @@
                 container.append(backMoneyButton);
                 container.append(excelExportButton);
                 statusbar.append(container);
-                addButton.jqxButton({  width: 80, height: 20 });
-                backMoneyButton.jqxButton({  width: 120, height: 20 });
-                excelExportButton.jqxButton({  width: 80, height: 20 });
+                addButton.jqxButton({  width: 80, height: 25 });
+                backMoneyButton.jqxButton({  width: 120, height: 25 });
+                excelExportButton.jqxButton({  width: 80, height: 25 });
                 addButton.click(function (event) {
                 	$("#id").val('');
                 	var orderNo = $.ajax({
@@ -290,6 +290,10 @@
 			width: 1000,
 		});
 		
+		$("#orderNo").jqxInput({height: 23, width: 200, minLength: 1});
+		$("#orderSeq").jqxInput({height: 23, width: 200, minLength: 1});
+		$("#deskNo").jqxInput({height: 23, width: 200, minLength: 1});
+		$("#amount").jqxInput({height: 23, width: 200, minLength: 1});
 		$("#customerSelect").jqxDropDownList({source: customerAdapter, width: '200', height: '23'});
 		$("#orderStatusSelect").jqxDropDownList({source: orderStatusAdapter, selectedIndex: 0, width: '200', height: '23'});
 		$("#saveConfirmBtn").jqxButton({width: '100',height:'23'});
