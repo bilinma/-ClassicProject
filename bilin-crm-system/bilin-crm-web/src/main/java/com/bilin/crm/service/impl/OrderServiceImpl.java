@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bilin.crm.constant.BackStatus;
+import com.bilin.crm.constant.OrderStatus;
 import com.bilin.crm.dao.CustomerMapper;
 import com.bilin.crm.dao.OrderMapper;
 import com.bilin.crm.domain.Customer;
@@ -45,9 +47,25 @@ public class OrderServiceImpl implements IOrderService {
 		if(orderDB!=null){
 			order.setCreateTime(order.getCreateTime());
 			orderMapper.updateByPrimaryKeySelective(order);
+			if(orderDB.getCustomerId().longValue()!=order.getCustomerId().longValue()){
+				Customer customerOld = customerMapper.selectByPrimaryKey(orderDB.getCustomerId());
+				customerOld.setAmountTotal(customerOld.getAmountTotal()-orderDB.getAmount());
+				customerMapper.updateByPrimaryKey(customerOld);
+				Customer customerNew = customerMapper.selectByPrimaryKey(order.getCustomerId());
+				customerNew.setAmountTotal(customerNew.getAmountTotal()+order.getAmount());
+				customerMapper.updateByPrimaryKey(customerNew);
+			}else{
+				if(orderDB.getAmount().intValue()!=order.getAmount().intValue()){
+					Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
+					Integer amountTotal = customer.getAmountTotal()-orderDB.getAmount()+order.getAmount();
+					customer.setAmountTotal(amountTotal);
+					customerMapper.updateByPrimaryKey(customer);
+				}
+			}
+			
 		}else{
 			order.setCreateTime(new Date());
-			order.setBackStatus(1);
+			order.setBackStatus(BackStatus.unBackMoney.code);
 			orderMapper.insert(order);
 			Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
 			Integer amountTotal = customer.getAmountTotal();
@@ -88,8 +106,8 @@ public class OrderServiceImpl implements IOrderService {
 	public String confirmBackMoney(Long id) {
 		String retMsg = "返款成功！";
 		Order order = orderMapper.selectByPrimaryKey(id);
-		if(order.getBackStatus().intValue()==2&&order.getBackStatus()==2){
-			order.setBackStatus(3);
+		if(order.getOrderStatus().intValue()==OrderStatus.payed.code&&order.getBackStatus()==BackStatus.waitBackMoney.code){
+			order.setBackStatus(BackStatus.backMoney.code);
 			orderMapper.updateByPrimaryKeySelective(order);
 		}else{
 			retMsg = "订单未支付或者没到待返款状态！";
