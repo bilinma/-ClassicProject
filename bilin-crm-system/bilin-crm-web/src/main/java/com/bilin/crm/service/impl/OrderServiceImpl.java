@@ -31,8 +31,10 @@ public class OrderServiceImpl implements IOrderService {
 	public void deleteOrder(Long id) {
 		Order order = orderMapper.selectByPrimaryKey(id);
 		Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
-		customer.setAmountTotal(customer.getAmountTotal()-order.getAmount());
-		customerMapper.updateByPrimaryKey(customer);
+		if(customer!=null){
+			customer.setAmountTotal(customer.getAmountTotal()-order.getAmount());
+			customerMapper.updateByPrimaryKey(customer);
+		}
 		orderMapper.deleteByPrimaryKey(id);
 	}
 
@@ -49,17 +51,23 @@ public class OrderServiceImpl implements IOrderService {
 			orderMapper.updateByPrimaryKeySelective(order);
 			if(orderDB.getCustomerId().longValue()!=order.getCustomerId().longValue()){
 				Customer customerOld = customerMapper.selectByPrimaryKey(orderDB.getCustomerId());
-				customerOld.setAmountTotal(customerOld.getAmountTotal()-orderDB.getAmount());
-				customerMapper.updateByPrimaryKey(customerOld);
+				if(customerOld!=null){
+					customerOld.setAmountTotal(customerOld.getAmountTotal()-orderDB.getAmount());
+					customerMapper.updateByPrimaryKey(customerOld);
+				}
 				Customer customerNew = customerMapper.selectByPrimaryKey(order.getCustomerId());
-				customerNew.setAmountTotal(customerNew.getAmountTotal()+order.getAmount());
-				customerMapper.updateByPrimaryKey(customerNew);
+				if(customerNew!=null){
+					customerNew.setAmountTotal(customerNew.getAmountTotal()+order.getAmount());
+					customerMapper.updateByPrimaryKey(customerNew);
+				}
 			}else{
 				if(orderDB.getAmount().intValue()!=order.getAmount().intValue()){
 					Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
-					Integer amountTotal = customer.getAmountTotal()-orderDB.getAmount()+order.getAmount();
-					customer.setAmountTotal(amountTotal);
-					customerMapper.updateByPrimaryKey(customer);
+					if(customer!=null){
+						Integer amountTotal = customer.getAmountTotal()-orderDB.getAmount()+order.getAmount();
+						customer.setAmountTotal(amountTotal);
+						customerMapper.updateByPrimaryKey(customer);
+					}
 				}
 			}
 			
@@ -68,11 +76,12 @@ public class OrderServiceImpl implements IOrderService {
 			order.setBackStatus(BackStatus.unBackMoney.code);
 			orderMapper.insert(order);
 			Customer customer = customerMapper.selectByPrimaryKey(order.getCustomerId());
-			Integer amountTotal = customer.getAmountTotal();
-			amountTotal =  amountTotal + order.getAmount();
-			customer.setAmountTotal(amountTotal);
-			customerMapper.updateByPrimaryKey(customer);
-			
+			if(customer!=null){
+				Integer amountTotal = customer.getAmountTotal();
+				amountTotal =  amountTotal + order.getAmount();
+				customer.setAmountTotal(amountTotal);
+				customerMapper.updateByPrimaryKey(customer);
+			}
 			int orderCount = orderMapper.selectCount(null);
 			if(orderCount%31==0){
 				orderMapper.updateMinUnBackOrder();
