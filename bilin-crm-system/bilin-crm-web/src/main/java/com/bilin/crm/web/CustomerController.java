@@ -86,7 +86,7 @@ public class CustomerController {
 		for(Customer customer : dataList){
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("value", customer.getId());
-			map.put("label", customer.getName());
+			map.put("label", customer.getName()+"|"+customer.getTelephone());
 			retlist.add(map);
 		}
 		return retlist;
