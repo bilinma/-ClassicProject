@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jqxGrid-4.3.0/jqx-all.js"></script>
 <script type="text/javascript" src="js/jqxGrid-4.3.0/globalization/globalize.js"></script>
-<script type="text/javascript" src="js/validateUtil.js"></script>
+<script type="text/javascript" src="js/crm/common/validateUtil.js"></script>
 
 
 <script type="text/javascript"> 
