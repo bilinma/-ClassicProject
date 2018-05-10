@@ -291,14 +291,30 @@
 		$("#orderSeq").jqxInput({height: 23, width: 200, minLength: 1});
 		$("#deskNo").jqxInput({height: 23, width: 200, minLength: 1});
 		$("#amount").jqxInput({height: 23, width: 200, minLength: 1});
-		$("#customerSelect").jqxDropDownList({source: customerAdapter, width: '200', height: '23'});
+		$("#customerSelect").jqxDropDownList({
+			source: customerAdapter,
+			filterable: true,
+			width: '200', 
+			height: '23',
+            selectionRenderer: function (element, index, label, value) {
+            	if(index!=-1){
+            		var text = label.replace(/\n/g, " ");
+            		return "<span style='left: 4px; top: 6px; position: relative;'>" + text + "</span>";
+            	}
+            }
+		});
 		$("#orderStatusSelect").jqxDropDownList({source: orderStatusAdapter, selectedIndex: 0, width: '200', height: '23'});
 		$("#saveConfirmBtn").jqxButton({width: '100',height:'23'});
 		$('#saveConfirmBtn').on('click',function(){
 			//var customerId = $('#customerIdSelect option:selected').val();
 			var customerSelectItem = $("#customerSelect").jqxDropDownList('getSelectedItem');
-			var customerId = customerSelectItem.value;
-			if (!customerId||customerId=='-1') {
+			if(customerSelectItem){
+				var customerId = customerSelectItem.value;
+				if (!customerId||customerId=='-1') {
+					alert("顾客不能为空！")
+					return ;
+				}
+			}else{
 				alert("顾客不能为空！")
 				return ;
 			}
