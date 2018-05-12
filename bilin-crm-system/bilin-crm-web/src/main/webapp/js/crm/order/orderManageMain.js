@@ -169,7 +169,7 @@
             		}
                 });
                 excelExportButton.click(function(event){
-                	$("#jqxgrid").jqxGrid('exportdata', 'xls', '订单列表');     
+                	$("#jqxgrid").jqxGrid('exportdata', 'xls', encodeURIComponent('订单列表'));     
                 }); 
             },            
             pageable: true,    

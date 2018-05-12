@@ -96,7 +96,7 @@
                 	$('#saveCustomerWin').jqxWindow('open');  
                 });
                 excelExportButton.click(function(event){
-                	$("#jqxgrid").jqxGrid('exportdata', 'xls', '顾客信息');     
+                	$("#jqxgrid").jqxGrid('exportdata', 'xls', encodeURIComponent('顾客信息'));     
                 }); 
             },
             pageable: true,    
