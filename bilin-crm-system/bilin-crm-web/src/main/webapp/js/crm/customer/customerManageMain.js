@@ -121,6 +121,21 @@
               {text: '顾客等级',  datafield: 'level' ,displayfield: 'levelShow',columntype:'dropdownlist',align: 'center',cellsalign: 'center', width: 100,editable:false, cellsrenderer:cellsrenderer} ,
               {text: '总消费额',  datafield: 'amountTotal', align: 'center', cellsalign: 'right', width: 100,editable:false,cellsrenderer:cellsrenderer},
               {text: '创建时间',  datafield: 'createTime', align: 'center', cellsalign: 'center', width: 200,editable:false,cellsformat: 'yyyy-MM-dd HH:mm:ss',cellsrenderer:cellsrenderer},
+              {text: '订单',  datafield: 'lookOperate', columngroup: 'operate',columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
+            	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
+            		  return "订单";  
+                  },
+            	  buttonclick:function(row,owner){
+                		var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', row);
+                		var name = dataRecord.name;
+                		var id = dataRecord.id;
+                		alert(basePath+"order/init.do");
+                		var params = new Object();
+                		params["id"] = id;
+                		params["name"] = name;
+                		window.showModalDialog(basePath+"order/init.do",params,"dialogWidth=500px;dialogHeight=500px;status=no;help=no;scrollbars=no");
+                  }
+              },
               {text: '编辑',  datafield: 'editOperate', columngroup: 'operate',columntype:'button',align: 'center', width: 100,  editable:false,hidden:!editable,
             	  cellsrenderer:function(row, column, value, defaultHtml, columnproperties, rowdata){
             		  return "编辑";  

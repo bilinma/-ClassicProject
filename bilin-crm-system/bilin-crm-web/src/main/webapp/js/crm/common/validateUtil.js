@@ -11,6 +11,15 @@ function regNameSpace(namespace) {
 
 regNameSpace("validateUtil");
 
+function showDetailBlank(url,params) {
+	url = url + '?tokenid=1';
+	if (params != null && params != '') {
+		for (var pop in params) {
+			url += '&' + pop + '=' + params[pop];
+		}
+	}
+	window.open(url);
+}
 
 
 validateUtil = {
