@@ -55,7 +55,7 @@ public class LoginController {
 				user = loginService.getUser(userCode,password);  
 				if(user!=null){
 					request.getSession().setAttribute("loginUserInfo", user); 
-					return "main";       
+					return "redirect:main.do";       
 				}else{
 					model.addAttribute("loginInfo", "用户名或密码错误！");  
 					model.addAttribute("userCode", userCode);
@@ -73,6 +73,12 @@ public class LoginController {
 			return "/login"; 
 		}
 	}
+	
+	@RequestMapping(value = "/main")
+	public String main(Model model){
+		return "main";
+	}
+	
 	
 	@RequestMapping(value = "/checkUser")
 	public String checkUser(Model model,String userCode,String password){
