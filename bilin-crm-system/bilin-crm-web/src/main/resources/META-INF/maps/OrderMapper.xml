@@ -35,7 +35,7 @@
 			</if>
 			<if test="custSearchValue != null and custSearchValue != ''">
 				and customer_id in (SELECT id FROM t_customer
-					WHERE (NAME LIKE CONCAT('%', #{custSearchValue},'%') or telephone like CONCAT('%', #{custSearchValue},'%'))
+					WHERE (code LIKE CONCAT('%', #{custSearchValue},'%') or NAME LIKE CONCAT('%', #{custSearchValue},'%') or telephone like CONCAT('%', #{custSearchValue},'%'))
 				)
 			</if>
 			<if test="deskNo != null">
@@ -50,8 +50,11 @@
 			<if test="backStatus != null">
 				and back_status = #{backStatus,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null">
-				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			<if test="startCreateTime != null">
+				and create_time >= #{startCreateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endCreateTime != null">
+				<![CDATA[ and create_time < #{endCreateTime,jdbcType=TIMESTAMP}]]>
 			</if>
 		</where>
 	</sql>

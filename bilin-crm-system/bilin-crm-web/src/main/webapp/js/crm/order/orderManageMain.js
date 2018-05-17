@@ -23,7 +23,8 @@
        		localdata: customerList           
        	};           
        	var customerAdapter = new $.jqx.dataAdapter(selectSource, {autoBind: true});
-        
+       	var startCreateTime = $('#startCreateTime').jqxDateTimeInput('getDate')
+       	var endCreateTime = $('#endCreateTime').jqxDateTimeInput('getDate')
         var source = {
         	datatype: "json",
         	type:'post', 
@@ -56,7 +57,9 @@
             url: "order/getOrderList.do",
             data:{
             	orderNo:$('#orderNoQuery').val(),
-            	custSearchValue:$('#custSearchValue').val()
+            	custSearchValue:$('#custSearchValue').val(),
+            	startCreateTime:startCreateTime,
+		    	endCreateTime:endCreateTime
             },
             root:'result' 
         }; 
@@ -259,17 +262,29 @@
     		    }
      	});
         
-	    $("#custSearchValue").jqxInput({placeHolder: "顾客姓名/手机", height: 20, width: 200, minLength: 1});
-	    $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
+        $("#orderNoQuery").jqxInput({placeHolder: "订单编号", height: 20, width: 200, minLength: 1});
+	    $("#custSearchValue").jqxInput({placeHolder: "顾客编号/姓名/手机", height: 20, width: 200, minLength: 1});
+	    $("#startCreateTime").jqxDateTimeInput({placeHolder: "开始时间", min: new Date(1900, 1, 1), max: new Date(),width: '200px', height: '23px',formatString: 'yyyy-MM-dd'});
+	    $('#startCreateTime').jqxDateTimeInput('setDate','');
+	    $("#endCreateTime").jqxDateTimeInput({placeHolder: "结束时间", min: new Date(1900, 1, 1), max: new Date(),width: '200px', height: '23px',formatString: 'yyyy-MM-dd'});
+	    $('#endCreateTime').jqxDateTimeInput('setDate','');
 	    
         $("#queryBtn").jqxButton({width: '100',height:'23'});
         function queryOrderList(){
 	    	var orderNo = $('#orderNoQuery').val();
 	    	var custSearchValue=$('#custSearchValue').val();
+	    	var startCreateTime = $('#startCreateTime').jqxDateTimeInput('getDate');
+	    	var endCreateTime = $('#endCreateTime').jqxDateTimeInput('getDate');
 		    dataAdapter._source.data={ 
 		    	orderNo:orderNo,
-		    	custSearchValue:custSearchValue
+		    	custSearchValue:custSearchValue	    	
 		    } 
+			if(startCreateTime){
+				dataAdapter._source.data.startCreateTime =startCreateTime;
+			}
+		    if(endCreateTime){
+				dataAdapter._source.data.endCreateTime =endCreateTime;
+			} 
 		    $("#jqxgrid").jqxGrid({ source: dataAdapter });
 	    }
 	    $('#queryBtn').on('click',queryOrderList);

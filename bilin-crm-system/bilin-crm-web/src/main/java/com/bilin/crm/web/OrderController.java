@@ -1,5 +1,8 @@
 package com.bilin.crm.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +10,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,43 +33,50 @@ import com.bilin.crm.vo.OrderCondition;
 @Controller
 @RequestMapping(value = "/order")
 public class OrderController {
-	
-	
+
 	@Autowired
-	private IOrderService orderService; 
+	private IOrderService orderService;
 	@Autowired
-	private ICustomerService customerService; 
-	
+	private ICustomerService customerService;
+
 	@RequestMapping("init")
-	public String forwardConfigMain(HttpServletRequest request,Model model) {
-		User user  = UserUtils.getCurrentUser();
+	public String forwardConfigMain(HttpServletRequest request, Model model) {
+		User user = UserUtils.getCurrentUser();
 		request.setAttribute("roleCode", user.getRoleCode());
 		List<Customer> dataList = customerService.getCustomerSelectList();
 		model.addAttribute("customerList", dataList);
 		return "order/orderManageMain";
 	}
-	
-	@RequestMapping(value = "/getOrderList") 
+
+	@RequestMapping(value = "/getOrderList")
 	@ResponseBody
 	public Object getOrderList(OrderCondition orderCondition) throws Exception {
 		orderCondition.setStratRow();
+		Date endCreateTime = orderCondition.getEndCreateTime();
+		if(endCreateTime!=null){
+			Calendar c = Calendar.getInstance();
+			c.setTime(endCreateTime);
+			c.add(Calendar.DAY_OF_MONTH, 1);
+			orderCondition.setEndCreateTime(c.getTime());
+		}
 		List<Order> dataList = orderService.getOrderList(orderCondition);
 		int totalRecords = orderService.getOrderListCount(orderCondition);
-		Map<String,Object> map = new HashMap<String, Object>(); 
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("totalRecords", totalRecords);
 		map.put("result", dataList);
-		return map; 
+		return map;
 	}
-	
-	@RequestMapping(value = "/saveOrderData") 
+
+
+	@RequestMapping(value = "/saveOrderData")
 	@ResponseBody
 	public Map<String, Object> saveOrderData(Order order) {
 		Map<String, Object> retMap = new HashMap<String, Object>();
-		try{
+		try {
 			orderService.saveOrder(order);
 			retMap.put("successFlag", true);
 			retMap.put("retMsg", "保存成功！");
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("successFlag", false);
 			retMap.put("retMsg", e.getMessage());
@@ -69,73 +84,71 @@ public class OrderController {
 		}
 		return retMap;
 	}
-	
-	@RequestMapping(value = "/confirmBackMoney") 
+
+	@RequestMapping(value = "/confirmBackMoney")
 	@ResponseBody
 	public Map<String, Object> confirmBackMoney(Long id) {
 		Map<String, Object> retMap = new HashMap<String, Object>();
-		try{
+		try {
 			String msg = orderService.confirmBackMoney(id);
 			retMap.put("successFlag", true);
 			retMap.put("retMsg", msg);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			retMap.put("successFlag", false);
-			retMap.put("retMsg", "处理异常："+e.getMessage());
+			retMap.put("retMsg", "处理异常：" + e.getMessage());
 			return retMap;
 		}
 		return retMap;
 	}
-	
-	
-	
-	@RequestMapping(value = "/deleteOrder") 
+
+	@RequestMapping(value = "/deleteOrder")
 	@ResponseBody
-	public String deleteOrder(@RequestParam(value = "id", required=true)Long id) {
-		try{
-			orderService.deleteOrder(id);  
-		}catch(Exception e){
+	public String deleteOrder(@RequestParam(value = "id", required = true) Long id) {
+		try {
+			orderService.deleteOrder(id);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
 		}
 		return "success";
 	}
-	
-	@RequestMapping(value = "/getOrderNo") 
+
+	@RequestMapping(value = "/getOrderNo")
 	@ResponseBody
 	public String getOrderNo() {
-		String orderNo="";
-		try{
+		String orderNo = "";
+		try {
 			orderNo = CommonUtils.getOrderNo();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
 		}
 		return orderNo;
 	}
-	
-	@RequestMapping(value = "/getOrderByOrderNo") 
+
+	@RequestMapping(value = "/getOrderByOrderNo")
 	@ResponseBody
 	public Order getOrderByOrderNo(String orderNo) {
 		Order order = orderService.getOrderByOrderNo(orderNo);
 		return order;
 	}
-	
-	@RequestMapping(value = "/getNextOrderSeq") 
+
+	@RequestMapping(value = "/getNextOrderSeq")
 	@ResponseBody
 	public Integer getNextOrderSeq() {
 		Integer orderSeq = 1;
-		try{
+		try {
 			orderSeq = orderService.getNextOrderSeq();
-			if(orderSeq==null){
+			if (orderSeq == null) {
 				orderSeq = 1;
-			}else{
+			} else {
 				orderSeq += 1;
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return orderSeq;
 	}
-	
+
 }

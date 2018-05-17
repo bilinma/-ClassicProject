@@ -50,16 +50,9 @@ public class OrderCondition extends PageRequest{
      */
     private Integer backStatus;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
+    private Date startCreateTime;
 
-    /**
-     * 订单备注
-     */
-    private String remark;
-
+    private Date endCreateTime;
 
     public Long getId() {
         return id;
@@ -126,19 +119,22 @@ public class OrderCondition extends PageRequest{
 		this.backStatus = backStatus;
 	}
 
-	public Date getCreateTime() {
-        return createTime;
-    }
+	public Date getStartCreateTime() {
+		return startCreateTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setStartCreateTime(Date startCreateTime) {
+		this.startCreateTime = startCreateTime;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public Date getEndCreateTime() {
+		return endCreateTime;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setEndCreateTime(Date endCreateTime) {
+		this.endCreateTime = endCreateTime;
+	}
+	
+	
+
 }

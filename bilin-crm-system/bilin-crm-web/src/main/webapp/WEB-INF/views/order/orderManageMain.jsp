@@ -1,15 +1,20 @@
 
-<script type="text/javascript" src="js/json2.js"></script>     
+<!-- <script type="text/javascript" src="js/json2.js"></script>      -->
 <script type="text/javascript" src="js/crm/order/orderManageMain.js"></script>
 </head>
   
 <body id="orderMainBody">
 	<div align="left">
-		<div style="width: 600px; padding-left: 100px; float: left;">
-			<input type="text" id="custSearchValue" /> 
-			<input type="text" id="orderNoQuery" />
-			<input type="button" id="queryBtn" value="查询">
-		</div>
+<!-- 		<div style="width: 600px; padding-left: 100px; float: left;"> -->
+		<table class="register-table">
+			<tr>
+				<td ><input type="text" id="orderNoQuery" /></td>
+				<td ><input type="text" id="custSearchValue" /></td>
+				<td ><input id="startCreateTime" style="float: left;"/><label style="float: left;">-</label><input id="endCreateTime" style="float: left;"/></td>
+				<td width="10%"><input type="button" id="queryBtn" value="查询"></td>
+			</tr>
+		</table>
+<!-- 		</div> -->
 	</div>
 
 	<div id='jqxWidget' align="center" style="margin-top: 20px; font-size: 13px; font-family: Verdana; float: center; width: 100%;">
