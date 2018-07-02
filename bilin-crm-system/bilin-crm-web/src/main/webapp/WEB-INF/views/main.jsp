@@ -34,7 +34,7 @@
 		  $("#jqxMenu").css('visibility', 'visible');  
 		  $("#mainContent").css({width:'100%',height:'100%'});
 		  //默认页 
-		  document.getElementById('mainContent').src = 'order/init.do';     
+		  $('#mainContent').attr('src','order/init.do');  
 		}); 
 	  function logout(){
 		  window.location.href="logout.do";   

@@ -8,17 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bilin.crm.common.JwtTokenUtil;
 import com.bilin.crm.common.UserUtils;
 import com.bilin.crm.domain.User;
 import com.bilin.crm.service.IUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class LoginController {
 	@Autowired
 	IUserService loginService; 
 	
-	@Autowired 
-	private  HttpServletRequest request;  
 	
 	public IUserService getLoginService() {
 		return loginService;
@@ -34,7 +34,7 @@ public class LoginController {
 	} 
 	
 	@RequestMapping(value = "/logout")
-	public String logout(Model model){
+	public String logout(HttpServletRequest request,Model model){
 		 request.getSession().removeAttribute("loginUserInfo");        //注销session中的id对象
 		 request.getSession().removeAttribute("roleguid"); 
 		 request.getSession().invalidate();   
@@ -42,19 +42,19 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login")
-	public String login(Model model){
+	public String login(HttpServletRequest request,Model model){
 		String userCode= request.getParameter("userCode");
 		String password = request.getParameter("password"); 
 		try{
 			if(userCode==null&&password==null){
 				return "login";                                   
 			}else{
-				User user = new User();
-		    	request.getSession().setAttribute("loginUserInfo", user);       
-		        UserUtils.setUser(user);   
-				user = loginService.getUser(userCode,password);  
+				User user = loginService.getUser(userCode,password);  
 				if(user!=null){
-					request.getSession().setAttribute("loginUserInfo", user); 
+					UserUtils.setUser(user);   
+					request.getSession().setAttribute("loginUserInfo", user);
+					String token = JwtTokenUtil.createToken(userCode);
+					model.addAttribute("access_token", token);
 					return "redirect:main.do";       
 				}else{
 					model.addAttribute("loginInfo", "用户名或密码错误！");  
@@ -81,7 +81,7 @@ public class LoginController {
 	
 	
 	@RequestMapping(value = "/checkUser")
-	public String checkUser(Model model,String userCode,String password){
+	public String checkUser(HttpServletRequest request,Model model,String userCode,String password){
 		User user= loginService.getUser(userCode,password); 
 		request.getSession().setAttribute("loginUserInfo", user);     
 		if(user!=null){

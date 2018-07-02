@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +24,10 @@ public class UserInfoFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
+		Cookie[] cookies = request.getCookies();
+		String access_token = getValueByCookie(cookies, "access_token");
+		System.out.println(access_token);
+		
 		HttpServletResponse response = (HttpServletResponse) res;
 		User userDTO = (User) request.getSession().getAttribute("loginUserInfo");
 		if (userDTO == null) {
@@ -50,4 +55,17 @@ public class UserInfoFilter implements Filter {
 
 	}
 
+	
+	private static String getValueByCookie(Cookie[] cookies, String name) {
+		if ((null != cookies) && (cookies.length > 0)) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie cookie = cookies[i];
+				if (cookie.getName().equalsIgnoreCase(name)) {
+					return cookie.getValue();
+				}
+			}
+		}
+
+		return null;
+	}
 }

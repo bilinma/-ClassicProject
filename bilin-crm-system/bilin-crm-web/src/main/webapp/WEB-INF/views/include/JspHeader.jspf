@@ -11,7 +11,12 @@
 
 <%
 String path = request.getContextPath();
+String pathPrefix = request.getScheme()+"://"+request.getServerName();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String access_token = "";
+if(request.getParameter("access_token") != null && !request.getParameter("access_token").equals("")){
+	access_token = request.getParameter("access_token");
+}
 %>
 
 <base href="<%=basePath%>" > 
@@ -24,10 +29,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="js/jqxGrid-4.3.0/jqx-all.js"></script>
 <script type="text/javascript" src="js/jqxGrid-4.3.0/globalization/globalize.js"></script>
 <script type="text/javascript" src="js/crm/common/validateUtil.js"></script>
-
+<script type="text/javascript" src="js/cookie.js"></script>
 
 <script type="text/javascript"> 
 var basePath = "<%=basePath%>";
+var access_token = "<%=access_token %>";
+if(access_token){
+	setCookie("access_token",access_token,1);
+}
+
+
 $.jqx.theme = 'ui-redmond';
 //下拉选项
 function getJqxSelectList(gropType){
