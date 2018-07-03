@@ -17,7 +17,7 @@
 <!-- 		</div> -->
 	</div>
 
-	<div id='jqxWidget' align="center" style="margin-top: 20px; font-size: 13px; font-family: Verdana; float: center; width: 100%;">
+	<div id='jqxWidget' align="center" style="margin-top: 10px; font-size: 13px; font-family: Verdana; float: center; width: 100%;">
 		<div id="jqxgrid" align="center" style="width: 100%; height: 100%">
 		</div>
 	</div>
