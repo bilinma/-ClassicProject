@@ -6,7 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author 
+ * 
+ * @author xiaobin.ma
+ *
  */
 @Entity
 @Table(name = "t_dictionary")

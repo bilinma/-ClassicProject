@@ -5,7 +5,9 @@ import java.util.Date;
 import com.bilin.crm.request.PageRequest;
 
 /**
- * @author 
+ * 
+ * @author xiaobin.ma
+ *
  */
 public class OrderCondition extends PageRequest{
 	private static final long serialVersionUID = 1L;
