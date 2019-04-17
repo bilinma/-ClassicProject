@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bilin.crm.dao.CustomerMapper;
@@ -32,7 +34,7 @@ public class CustomerServiceImpl implements ICustomerService {
 	
 	
 	@Override
-	@Transactional(readOnly = false,rollbackFor=Exception.class)
+	@Transactional(readOnly = false,propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_UNCOMMITTED,rollbackFor=Exception.class)
 	public int saveCustomer(Customer customer) {
 		Long custId = customer.getId();
 		Customer  customerDB = null;
